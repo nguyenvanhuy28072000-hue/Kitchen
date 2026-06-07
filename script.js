@@ -3,29 +3,51 @@ localStorage.clear();
 const courseData = {
 
 "4000円":[
-    "枝豆",
+    "お造り",
     "サラダ",
-    "唐揚げ",
-    "ポテト",
-    "パスタ",
-    "アイス"
+    "揚げ物２種",
+    "鳥バジルソース",
+    "カレーつくね",
+    "ちまき"
+],
+"4500円":[
+    "お造り",
+    "サラダ",
+    "キスとなすの天ぷら",
+    "つくねと万願寺",
+    "さわら",
+    "ちまき",
+    "デザート"
 ],
 "5000円":[
-    "前菜",
-    "刺身",
-    "焼鳥",
-    "揚物",
-    "寿司",
-    "汁物",
+    "お造り",
+    "湯葉",
+    "サラダ",
+    "エビとなすの天ぷら",
+    "はもユーリンチ",
+    "鶏のてりやき",
+    "ちまき",
     "デザート"
 ],
 "6000円":[
-    "前菜",
-    "刺身盛",
-    "焼鳥盛",
-    "天ぷら",
-    "寿司",
-    "鍋",
+    "お造り",
+    "湯葉",
+    "サラダ",
+    "はもと生麩の揚げ出し",
+    "豚しゃぶ",
+    "さわら",
+    "ちまき",
+    "デザート"
+],
+"7000円":[
+    "お造り",
+    "湯葉",
+    "サラダ",
+    "エビ、なす、万願寺の天ぷら",
+    "はもユーリンチ",
+    "鶏のてりやき",
+    "さわら",
+    "ちまき",
     "デザート"
 ]
 
@@ -49,7 +71,8 @@ const course =
     document.getElementById("courseSelect").value;
 const courseTime =
     document.getElementById("courseTime").value;
-
+const people =
+    document.getElementById("people").value;
 const tableNo =
     document.getElementById("tableNo").value;
 if(course === ""){
@@ -60,6 +83,10 @@ if(courseTime === ""){
     alert("時間を入力してください");
     return;
 }
+if(people === ""){
+    alert("人数を入力してください");
+    return;
+}
 if(tableNo === ""){
     alert("卓番を入力してください");
     return;
@@ -67,6 +94,7 @@ if(tableNo === ""){
 orders.push({
     course: course,
     time: courseTime,
+    people: people,
     table: tableNo,
     dishes: courseData[course].map(dish => ({
         name: dish,
@@ -75,9 +103,11 @@ orders.push({
 });
 saveOrders();
 render();
+document.getElementById("people").value = "";
 document.getElementById("tableNo").value = "";
 
 }
+
 
 function toggleDish(orderIndex,dishIndex){
 
@@ -101,11 +131,11 @@ render();
 
 function deleteOrder(index){
 
-if(confirm("このコースを削除しますか？")){
-    orders.splice(index,1);
-    saveOrders();
-    render();
-}
+    if(confirm("このコースを削除しますか？")){
+        orders.splice(index,1);
+         saveOrders();
+         render();
+    }
 
 }
 
@@ -118,11 +148,16 @@ orders.forEach((order,orderIndex)=>{
     const row =
         document.createElement("tr");
     let html = `
+           <td>
+            <button onclick="deleteOrder(${orderIndex})">削除</button>
+           </td>
         <td>${order.course}</td>
         <td>${order.time}</td>
+        <td>${order.people}</td>
         <td>${order.table}</td>
+     
     `;
-    for(let i=0;i<7;i++){
+    for(let i=0;i<9;i++){
         if(order.dishes[i]){
             const dish =
                 order.dishes[i];
