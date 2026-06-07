@@ -181,4 +181,21 @@ orders.forEach((order,orderIndex)=>{
 
 }
 
+function enableDrag(){
+    const tbody = document.getElementById("courseBody");
+
+    new Sortable(tbody, {
+        animation: 150,
+        onEnd: function (evt) {
+            // 並び替え反映
+            const movedItem = orders.splice(evt.oldIndex, 1)[0];
+            orders.splice(evt.newIndex, 0, movedItem);
+
+            saveOrders();
+            render(); // 再描画
+        }
+    });
+}
 render();
+enableDrag();
+
