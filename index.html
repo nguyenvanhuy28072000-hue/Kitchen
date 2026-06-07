@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>キッチンコース管理</title>
+<style>
+body{
+    font-family:sans-serif;
+    margin:15px;
+}
+h1{
+    text-align:center;
+}
+.controls{
+    margin-bottom:20px;
+}
+select,input,button{
+    padding:8px;
+    font-size:16px;
+    margin-right:10px;
+}
+button{
+    cursor:pointer;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+}
+th,td{
+    border:1px solid #ccc;
+    padding:10px;
+    text-align:center;
+}
+th{
+    background:#333;
+    color:white;
+}
+.dish{
+    cursor:pointer;
+    font-weight:bold;
+}
+.done{
+    background:#d9d9d9;
+    color:#777;
+    text-decoration:line-through;
+}
+</style>
+
+
+
+
+</head>
+<body>
+<h1>キッチンコース管理</h1>
+<div class="controls">
+<select id="courseSelect">
+
+<option value="">コース選択</option>
+<option value="4000円">4000円コース</option>
+<option value="4500円">4500円コース</option>
+<option value="5000円">5000円コース</option>
+<option value="6000円">6000円コース</option>
+<option value="7000円">7000円コース</option>
+
+</select>
+<input type="time" id="courseTime">
+<input type="text" id="people" placeholder="人数">
+<input type="text" id="tableNo" placeholder="卓番">
+
+<button onclick="addCourse()">追加</button>
+
+</div>
+<table>
+    <thead>
+        <tr>
+            <th></th>
+            <th>コース</th>
+            <th>時間</th>
+            <th>人数</th>
+            <th>卓番</th>
+            <th>料理①</th>
+            <th>料理②</th>
+            <th>料理③</th>
+            <th>料理④</th>
+            <th>料理⑤</th>
+            <th>料理⑥</th>
+            <th>料理⑦</th>
+            <th>料理⑧</th>
+            <th>料理⑨</th>
+        </tr>
+    </thead>
+
+<tbody id="courseBody">
+</tbody>
+</table>
+
+
+
+</body>
+</html>
+
+<script src="script.js"></script>
