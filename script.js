@@ -120,29 +120,31 @@ document.getElementById("tableNo").value = "";
 
 function toggleDish(orderIndex,dishIndex){
 
+    orders[orderIndex]
+        .dishes[dishIndex]
+        .done =
+    !orders[orderIndex]
+        .dishes[dishIndex]
+        .done;
+
+    const allDone =
         orders[orderIndex]
-            .dishes[dishIndex]
-            .done =
-        !orders[orderIndex]
-            .dishes[dishIndex]
-            .done;
-        const allDone =
-            orders[orderIndex]
-            .dishes
-            .every(d => d.done);
-       
+        .dishes
+        .every(d => d.done);
+
     if(allDone){
 
-    completedOrders.push({
-        ...orders[orderIndex],
-        completedTime: new Date().toLocaleTimeString("ja-JP")
-    });
+        alert("完了コースへ移動");
 
-    orders.splice(orderIndex,1);
-}
+        completedOrders.push({
+            ...orders[orderIndex],
+            completedTime: new Date().toLocaleTimeString("ja-JP")
+        });
+
+        orders.splice(orderIndex,1);
+    }
+
     saveOrders();
-    render();
-
 }
 
 function deleteOrder(index){
