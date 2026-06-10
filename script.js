@@ -230,6 +230,27 @@ function render(){
     body.appendChild(row);
 });
 
+    const completedBody =
+    document.getElementById("completedBody");
+
+    completedBody.innerHTML = "";
+
+    completedOrders.forEach(order => {
+
+        const row =
+        document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${order.course}</td>
+            <td>${order.time}</td>
+            <td>${order.people}名</td>
+            <td>${order.table}</td>
+            <td>${order.completedTime}</td>
+        `;
+
+        completedBody.appendChild(row);
+
+    });
 }
 
 function moveUp(index){
