@@ -53,8 +53,7 @@ const courseData = {
 
 };
 
-let orders =
-JSON.parse(localStorage.getItem("orders")) || [];
+let orders =[];
 
 async function saveOrders(){
 
