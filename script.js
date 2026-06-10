@@ -120,6 +120,8 @@ document.getElementById("tableNo").value = "";
 
 function toggleDish(orderIndex,dishIndex){
 
+    console.log(orderIndex,dishIndex);
+    
     orders[orderIndex]
         .dishes[dishIndex]
         .done =
