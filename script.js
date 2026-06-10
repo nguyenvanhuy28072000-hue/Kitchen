@@ -54,13 +54,15 @@ const courseData = {
 };
 
 let orders =[];
+let completedOrders = [];
 
 async function saveOrders(){
 
     await setDoc(
         doc(db,"kitchen","orders"),
         {
-            orders: orders
+            orders: orders,
+            completedOrders: completedOrders
         }
     );
 
@@ -306,6 +308,7 @@ onSnapshot(
 
         if(data){
             orders = data.orders || [];
+            completedOrders = data.completedOrders || [];
             render();
         }
 
