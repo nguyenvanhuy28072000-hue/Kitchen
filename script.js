@@ -56,7 +56,16 @@ const courseData = {
 let orders =
 JSON.parse(localStorage.getItem("orders")) || [];
 
-function saveOrders(){localStorage.setItem("orders",JSON.stringify(orders));}
+async function saveOrders(){
+
+    await setDoc(
+        doc(db,"kitchen","orders"),
+        {
+            orders: orders
+        }
+    );
+
+}
 
 
 
@@ -262,8 +271,21 @@ function updateCourse(index, newCourse){
     render();
 }
 
+onSnapshot(
+    doc(db,"kitchen","orders"),
+    (snapshot)=>{
+
+        const data = snapshot.data();
+
+        if(data){
+            orders = data.orders || [];
+            render();
+        }
+
+    }
+);
 
 
-render();
+
 
 
