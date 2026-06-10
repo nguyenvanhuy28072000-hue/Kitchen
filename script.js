@@ -251,10 +251,10 @@ function render(){
 
     completedOrders.forEach((order, index) => {
 
-        const row =
-        document.createElement("tr");
+    const row =
+    document.createElement("tr");
 
-            row.innerHTML = `
+    row.innerHTML = `
         <td>${order.course}</td>
         <td>${order.time}</td>
         <td>${order.people}名</td>
@@ -265,11 +265,11 @@ function render(){
                 戻す
             </button>
         </td>
-`;
+    `;
 
-        completedBody.appendChild(row);
+    completedBody.appendChild(row);
 
-    });
+});
 }
 
 function moveUp(index){
