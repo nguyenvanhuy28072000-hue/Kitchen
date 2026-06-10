@@ -249,18 +249,23 @@ function render(){
 
     completedBody.innerHTML = "";
 
-    completedOrders.forEach(order => {
+    completedOrders.forEach((order, index) => {
 
         const row =
         document.createElement("tr");
 
-        row.innerHTML = `
-            <td>${order.course}</td>
-            <td>${order.time}</td>
-            <td>${order.people}名</td>
-            <td>${order.table}</td>
-            <td>${order.completedTime}</td>
-        `;
+            row.innerHTML = `
+        <td>${order.course}</td>
+        <td>${order.time}</td>
+        <td>${order.people}名</td>
+        <td>${order.table}</td>
+        <td>${order.completedTime}</td>
+        <td>
+            <button onclick="restoreOrder(${index})">
+                戻す
+            </button>
+        </td>
+`;
 
         completedBody.appendChild(row);
 
@@ -312,6 +317,22 @@ function updateCourse(index, newCourse){
     render();
 }
 
+function restoreOrder(index){
+
+    const order = completedOrders[index];
+
+    // 完了時間を削除
+    delete order.completedTime;
+    delete order.completedAt;
+
+    orders.push(order);
+
+    completedOrders.splice(index,1);
+
+    saveOrders();
+    render();
+}
+
 onSnapshot(
     doc(db,"kitchen","orders"),
     (snapshot)=>{
@@ -335,7 +356,7 @@ window.moveDown = moveDown;
 window.updateField = updateField;
 window.updateCourse = updateCourse;
 window.toggleDish = toggleDish;
-
+window.restoreOrder = restoreOrder;
 
 
 
