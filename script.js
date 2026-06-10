@@ -52,6 +52,13 @@ const courseData = {
 ]
 
 };
+const courseDuration = {
+    "4000円": 90,
+    "4500円": 120,
+    "5000円": 120,
+    "6000円": 150,
+    "7000円": 180
+};
 
 let orders =[];
 let completedOrders = [];
@@ -173,9 +180,27 @@ function render(){
         document.getElementById("courseBody");
         body.innerHTML = "";
         orders.forEach((order,orderIndex)=>{
-    const row =
-        document.createElement("tr");
-        let html = `
+            const [hour, minute] = order.time.split(":");
+
+            const loTime = new Date();
+            
+            loTime.setHours(Number(hour));
+            loTime.setMinutes(Number(minute));
+            
+            loTime.setMinutes(
+                loTime.getMinutes() +
+                courseDuration[order.course]
+            );
+            
+            const loText =
+                loTime.getHours().toString().padStart(2,"0")
+                + ":"
+                + loTime.getMinutes().toString().padStart(2,"0");
+
+            
+            const row =
+                document.createElement("tr");
+                let html = `
 
 
     <td>   
@@ -213,13 +238,13 @@ function render(){
             onchange="updateField(${orderIndex}, 'people', this.value)">
     </td>
 
-
     <td>
         <input type="text"
             value="${order.table}"
-            
             onchange="updateField(${orderIndex}, 'table', this.value)">
     </td>
+    
+    <td>${loText}</td>
      
     `;
     for(let i=0;i<order.dishes.length;i++){
