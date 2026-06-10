@@ -128,8 +128,15 @@ function toggleDish(orderIndex,dishIndex){
             orders[orderIndex]
             .dishes
             .every(d => d.done);
-        if(allDone){
-            orders.splice(orderIndex,1);
+       
+    if(allDone){
+
+    completedOrders.push({
+        ...orders[orderIndex],
+        completedTime: new Date().toLocaleTimeString("ja-JP")
+    });
+
+    orders.splice(orderIndex,1);
 }
     saveOrders();
     render();
