@@ -285,6 +285,14 @@ onSnapshot(
 );
 
 
+window.addCourse = addCourse;
+window.deleteOrder = deleteOrder;
+window.moveUp = moveUp;
+window.moveDown = moveDown;
+window.updateField = updateField;
+window.updateCourse = updateCourse;
+window.toggleDish = toggleDish;
+
 
 
 
