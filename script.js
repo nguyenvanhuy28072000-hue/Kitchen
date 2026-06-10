@@ -227,7 +227,7 @@ function render(){
                 order.dishes[i];
             html += `
             <td
-            class="dish ${dish.done ? 'done' : ''}"
+            class="dish dish${i} ${dish.done ? 'done' : ''}"
             onclick="toggleDish(${orderIndex},${i})">
             ${dish.done ? '' : ''}
             ${dish.name}
