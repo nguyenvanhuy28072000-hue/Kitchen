@@ -214,7 +214,7 @@ function render(){
 
 
     <td>
-        <input type="number"
+        <input type="text"
             value="${order.table}"
             min="1"
             onchange="updateField(${orderIndex}, 'table', this.value)">
