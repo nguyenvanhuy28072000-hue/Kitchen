@@ -139,9 +139,10 @@ function toggleDish(orderIndex,dishIndex){
         alert("完了コースへ移動");
 
         completedOrders.push({
-            ...orders[orderIndex],
-            completedTime: new Date().toLocaleTimeString("ja-JP")
-        });
+    ...orders[orderIndex],
+    completedTime: new Date().toLocaleTimeString("ja-JP"),
+    completedAt: Date.now()
+});
 
         orders.splice(orderIndex,1);
     }
@@ -161,6 +162,12 @@ function deleteOrder(index){
 
 function render(){
 
+    completedOrders = completedOrders.filter(order =>
+        Date.now() - order.completedAt < 60 * 60 * 1000
+    );
+
+    saveOrders();
+    
     const body =
         document.getElementById("courseBody");
         body.innerHTML = "";
