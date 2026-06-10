@@ -148,6 +148,7 @@ function toggleDish(orderIndex,dishIndex){
     }
 
     saveOrders();
+    render();
 }
 
 function deleteOrder(index){
