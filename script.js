@@ -273,9 +273,21 @@ function restoreOrder(id) {
 
 function addExtraDish(orderId){
 
-  const name = prompt("追加料理名");
+  const choice = prompt(
+    "追加料理を選択\n\n1: 焼き鳥\n2: 宮炭"
+  );
 
-  if(!name) return;
+  let name = "";
+
+  if(choice === "1"){
+    name = "焼き鳥";
+  }
+  else if(choice === "2"){
+    name = "宮炭";
+  }
+  else{
+    return;
+  }
 
   const ref =
     window.db.collection("orders").doc(orderId);
