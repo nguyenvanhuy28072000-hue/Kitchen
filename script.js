@@ -1,7 +1,13 @@
 
 // コースのデータ
 const courseData = {
-
+"当日":[
+    "お造り",
+    "サラダ",
+    "焼き鳥２種",
+    "串揚げ３種",
+    "デザート"
+],
 "4000円":[
     "お造り",
     "サラダ",
@@ -53,6 +59,7 @@ const courseData = {
 
 };
 const courseDuration = {
+    "当日":70,
     "4000円": 90,
     "4500円": 90,
     "5000円": 100,
@@ -78,23 +85,22 @@ async function saveOrders(){
 
 
 function addCourse(){
-
-const course =
-    document.getElementById("courseSelect").value;
 const courseTime =
     document.getElementById("courseTime").value;
+const course =
+    document.getElementById("courseSelect").value;
 const people =
     document.getElementById("people").value;
 const tableNo =
     document.getElementById("tableNo").value;
 
 // 入力されなかったら、知らせる。
-if(course === ""){
-    alert("コースを選択してください");
-    return;
-}
 if(courseTime === ""){
     alert("時間を入力してください");
+    return;
+}
+if(course === ""){
+    alert("コースを選択してください");
     return;
 }
 if(people === ""){
@@ -109,8 +115,7 @@ if(tableNo === ""){
 
 orders.push({
      time: courseTime,
-    course: course,
-   
+    course: course,   
     people: people,
     table: tableNo,
     dishes: courseData[course].map(dish => ({
@@ -127,7 +132,6 @@ document.getElementById("tableNo").value = "";
 
 
 function toggleDish(orderIndex,dishIndex){
-
     console.log(orderIndex,dishIndex);
     
     orders[orderIndex]
@@ -211,16 +215,15 @@ function render(){
 
     <td>
         <button onclick="deleteOrder(${orderIndex})">削除</button> 
-    </td>
-    
+    </td>   
    <td>
         <input type="time"
             value="${order.time}"
             onchange="updateField(${orderIndex}, 'time', this.value)">
     </td>
-
     <td>
         <select onchange="updateCourse(${orderIndex}, this.value)">
+             <option value="当日" ${order.course === "当日" ? "selected" : ""}>当日</option>
              <option value="4000円" ${order.course === "4000円" ? "selected" : ""}>4000円</option>
              <option value="4500円" ${order.course === "4500円" ? "selected" : ""}>4500円</option>
              <option value="5000円" ${order.course === "5000円" ? "selected" : ""}>5000円</option>
@@ -228,18 +231,12 @@ function render(){
              <option value="7000円" ${order.course === "7000円" ? "selected" : ""}>7000円</option>
         </select>
     </td>
-
-
-
-
-
     <td>
         <input type="number"
             value="${order.people}"
             min="1"
             onchange="updateField(${orderIndex}, 'people', this.value)">
     </td>
-
     <td>
         <input type="text"
             value="${order.table}"
@@ -282,9 +279,8 @@ function render(){
     document.createElement("tr");
 
     row.innerHTML = `
-    <td>${order.time}</td>
-        <td>${order.course}</td>
-        
+        <td>${order.time}</td>
+        <td>${order.course}</td>        
         <td>${order.people}名</td>
         <td>${order.table}</td>
         <td>${order.completedTime}</td>
