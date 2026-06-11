@@ -177,9 +177,14 @@
         
 </table>
         
-        <script type="module" src="firebase.js"></script>
-        <script  type="module" src="script.js"></script>
+       <!-- Firebase compat（iOS12対応） -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
+<!-- あなたのコード -->
+<script src="firebase.js"></script>
+<script src="script.js"></script>
+        
 </body>
 </html>
 
