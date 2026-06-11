@@ -172,11 +172,20 @@ if(order.extraDishes){
 
     html += `
       <td
-        class="dish ${dish.done ? 'done' : ''}"
-        onclick="toggleExtraDish('${id}',${i})"
-      >
-        ★${dish.name}
-      </td>
+  class="dish extraDish ${dish.done ? 'done' : ''}"
+
+  draggable="true"
+
+  ondragstart="dragExtraDish('${id}',${i})"
+
+  ondragover="event.preventDefault()"
+
+  ondrop="dropExtraDish('${id}',${i})"
+
+  onclick="toggleExtraDish('${id}',${i})"
+>
+  ★${dish.name}
+</td>
     `;
 
   });
@@ -243,6 +252,8 @@ if(
   });
 }
 let dragIndex = null;
+let dragExtraIndex = null;
+let dragExtraOrderId = null;
 let dragOrderId = null;
 
 function dragDish(orderId,index){
@@ -272,6 +283,40 @@ function dropDish(orderId,targetIndex){
 
     ref.update({
       dishes:dishes
+    });
+
+  });
+
+}
+
+function dragExtraDish(orderId,index){
+
+  dragExtraIndex = index;
+  dragExtraOrderId = orderId;
+
+}
+
+function dropExtraDish(orderId,targetIndex){
+
+  if(orderId !== dragExtraOrderId) return;
+
+  const ref =
+    window.db.collection("orders").doc(orderId);
+
+  ref.get().then(doc=>{
+
+    const data = doc.data();
+
+    const extra =
+      data.extraDishes || [];
+
+    const moved =
+      extra.splice(dragExtraIndex,1)[0];
+
+    extra.splice(targetIndex,0,moved);
+
+    ref.update({
+      extraDishes:extra
     });
 
   });
@@ -520,3 +565,5 @@ window.moveDishRight = moveDishRight;
 window.dragDish = dragDish;
 window.dropDish = dropDish;
 window.toggleExtraDish = toggleExtraDish;
+window.dragExtraDish = dragExtraDish;
+window.dropExtraDish = dropExtraDish;
