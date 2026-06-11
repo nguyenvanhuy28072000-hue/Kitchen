@@ -135,10 +135,12 @@ function renderOrders(snapshot) {
 </td>
 
         <td>
-          <input type="number"
-            value="${order.people}"
-            onchange="updateField('${id}','people',this.value)">
-        </td>
+  <input type="number"
+    value="${order.people}"
+    onchange="updateField('${id}','people',this.value)"
+    style="width:50px;">
+  名
+</td>
 
         <td>
           <input type="text"
