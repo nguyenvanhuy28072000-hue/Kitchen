@@ -194,3 +194,12 @@ function restoreOrder(id) {
       window.db.collection("completedOrders").doc(id).delete();
     });
 }
+
+window.addCourse = addCourse;
+window.deleteOrder = deleteOrder;
+window.moveUp = moveUp;
+window.moveDown = moveDown;
+window.updateField = updateField;
+window.updateCourse = updateCourse;
+window.toggleDish = toggleDish;
+window.restoreOrder = restoreOrder;
