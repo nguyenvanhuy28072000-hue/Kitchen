@@ -333,7 +333,7 @@ function restoreOrder(id) {
 function addExtraDish(orderId){
 
   const choice = prompt(
-`追加料理を選択
+`追加料理を選択(番号を入力してください)
 
 0: 削除
 1: 焼き鳥
