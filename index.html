@@ -41,6 +41,9 @@
                 border-collapse:collapse;
                 background:rgb(244, 240, 240);
             }
+          body{
+    overflow-x:auto;
+}
             th,td{      /*th:表の見出し、td:表のデータ（中身）*/
                 border:1px solid #ccc;
                 padding:1px;
@@ -137,23 +140,27 @@
         <table>
             <thead>
                 <tr>
-                    <th></th>
-                    <th></th>
-        　　        <th>時間</th>
-                    <th>コース</th> 
-                    <th>人数</th>
-                    <th>テーブル</th>
-                　　<th>L.O.</th>
-                    <th>料理①</th>
-                    <th>料理②</th>
-                    <th>料理③</th>
-                    <th>料理④</th>
-                    <th>料理⑤</th>
-                    <th>料理⑥</th>
-                    <th>料理⑦</th>
-                    <th>料理⑧</th>
-                    <th>料理⑨</th>
-                </tr>
+    <th>順序</th>
+    <th>追加</th>
+    <th>削除</th>
+    <th>時間</th>
+    <th>コース</th>
+    <th>人数</th>
+    <th>卓番</th>
+    <th>L.O.</th>
+
+    <th>料理①</th>
+    <th>料理②</th>
+    <th>料理③</th>
+    <th>料理④</th>
+    <th>料理⑤</th>
+    <th>料理⑥</th>
+    <th>料理⑦</th>
+    <th>料理⑧</th>
+    <th>料理⑨</th>
+
+    <th>追加料理</th>
+</tr>
             </thead>
 
         <tbody id="courseBody"></tbody>
