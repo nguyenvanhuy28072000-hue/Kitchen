@@ -84,50 +84,52 @@ async function saveOrders(){
 
 
 
-function addCourse(){
-const courseTime =
+function addCourse() {
+  const courseTime =
     document.getElementById("courseTime").value;
-const course =
+  const course =
     document.getElementById("courseSelect").value;
-const people =
+  const people =
     document.getElementById("people").value;
-const tableNo =
+  const tableNo =
     document.getElementById("tableNo").value;
 
-// 入力されなかったら、知らせる。
-if(courseTime === ""){
+  // 入力チェック
+  if (courseTime === "") {
     alert("時間を入力してください");
     return;
-}
-if(course === ""){
+  }
+  if (course === "") {
     alert("コースを選択してください");
     return;
-}
-if(people === ""){
+  }
+  if (people === "") {
     alert("人数を入力してください");
     return;
-}
-if(tableNo === ""){
+  }
+  if (tableNo === "") {
     alert("卓番を入力してください");
     return;
-}
+  }
 
-
-orders.push({
-     time: courseTime,
-    course: course,   
-    people: people,
+  // Firestoreに保存（ここが重要）
+  window.db.collection("orders").add({
+    time: courseTime,
+    course: course,
+    people: Number(people),
     table: tableNo,
-    dishes: courseData[course].map(dish => ({
-        name: dish,
-        done: false
-    }))
-});
-saveOrders();
-render();
-document.getElementById("people").value = "";
-document.getElementById("tableNo").value = "";
 
+    dishes: courseData[course].map(dish => ({
+      name: dish,
+      done: false
+    })),
+
+    createdAt: new Date()
+  });
+
+  // 入力リセット
+  document.getElementById("people").value = "";
+  document.getElementById("tableNo").value = "";
 }
 
 
@@ -173,127 +175,100 @@ function deleteOrder(index){
 
 }
 
-function render(){
+function renderOrders(snapshot) {
+  const body = document.getElementById("courseBody");
+  body.innerHTML = "";
 
-    completedOrders = completedOrders.filter(order =>
-        Date.now() - order.completedAt < 60 * 60 * 1000
+  snapshot.forEach((doc) => {
+    const order = doc.data();
+    const orderId = doc.id;
+
+    const [hour, minute] = order.time.split(":");
+
+    const loTime = new Date();
+    loTime.setHours(Number(hour));
+    loTime.setMinutes(Number(minute));
+
+    loTime.setMinutes(
+      loTime.getMinutes() + courseDuration[order.course]
     );
 
-    saveOrders();
-    
-    const body =
-        document.getElementById("courseBody");
-        body.innerHTML = "";
-        orders.forEach((order,orderIndex)=>{
-            const [hour, minute] = order.time.split(":");
+    const loText =
+      loTime.getHours().toString().padStart(2, "0") +
+      ":" +
+      loTime.getMinutes().toString().padStart(2, "0");
 
-            const loTime = new Date();
-            
-            loTime.setHours(Number(hour));
-            loTime.setMinutes(Number(minute));
-            
-            loTime.setMinutes(
-                loTime.getMinutes() +
-                courseDuration[order.course]
-            );
-            
-            const loText =
-                loTime.getHours().toString().padStart(2,"0")
-                + ":"
-                + loTime.getMinutes().toString().padStart(2,"0");
+    let html = `
+      <tr>
 
-            
-            const row =
-                document.createElement("tr");
-                let html = `
+        <td>
+          <button onclick="moveUp('${orderId}')">▲</button>
+          <button onclick="moveDown('${orderId}')">▼</button>
+        </td>
 
+        <td>
+          <button onclick="deleteOrder('${orderId}')">削除</button>
+        </td>
 
-    <td>   
-        <button onclick="moveUp(${orderIndex})">▲</button>
-        <button onclick="moveDown(${orderIndex})">▼</button>
-    </td>
-
-    <td>
-        <button onclick="deleteOrder(${orderIndex})">削除</button> 
-    </td>   
-   <td>
-        <input type="time"
+        <td>
+          <input type="time"
             value="${order.time}"
-            onchange="updateField(${orderIndex}, 'time', this.value)">
-    </td>
-    <td>
-        <select onchange="updateCourse(${orderIndex}, this.value)">
-             <option value="当日" ${order.course === "当日" ? "selected" : ""}>当日</option>
-             <option value="4000円" ${order.course === "4000円" ? "selected" : ""}>4000円</option>
-             <option value="4500円" ${order.course === "4500円" ? "selected" : ""}>4500円</option>
-             <option value="5000円" ${order.course === "5000円" ? "selected" : ""}>5000円</option>
-             <option value="6000円" ${order.course === "6000円" ? "selected" : ""}>6000円</option>
-             <option value="7000円" ${order.course === "7000円" ? "selected" : ""}>7000円</option>
-        </select>
-    </td>
-    <td>
-        <input type="number"
+            onchange="updateField('${orderId}','time',this.value)">
+        </td>
+
+        <td>${order.course}</td>
+
+        <td>
+          <input type="number"
             value="${order.people}"
-            min="1"
-            onchange="updateField(${orderIndex}, 'people', this.value)">
-    </td>
-    <td>
-        <input type="text"
+            onchange="updateField('${orderId}','people',this.value)">
+        </td>
+
+        <td>
+          <input type="text"
             value="${order.table}"
-            onchange="updateField(${orderIndex}, 'table', this.value)">
-    </td>
-    
-    <td>${loText}</td>
-     
+            onchange="updateField('${orderId}','table',this.value)">
+        </td>
+
+        <td>${loText}</td>
     `;
-    for(let i=0;i<order.dishes.length;i++){
-        if(order.dishes[i]){
-            const dish =
-                order.dishes[i];
-            html += `
-            <td
-            class="dish dish${i} ${dish.done ? 'done' : ''}"
-            onclick="toggleDish(${orderIndex},${i})">
-            ${dish.done ? '' : ''}
-            ${dish.name}
-            </td>
-            `;
-        }else{
-            html += `
-            <td>-</td>
-            `;
-        }
+
+    for (let i = 0; i < order.dishes.length; i++) {
+      const dish = order.dishes[i];
+
+      html += `
+        <td class="dish dish${i} ${dish.done ? "done" : ""}"
+            onclick="toggleDish('${orderId}', ${i})">
+          ${dish.name}
+        </td>
+      `;
     }
-    row.innerHTML = html;
-    body.appendChild(row);
-});
 
-    const completedBody =
-    document.getElementById("completedBody");
+    html += `</tr>`;
 
-    completedBody.innerHTML = "";
+    body.innerHTML += html;
+  });
+}
+function renderCompleted(snapshot) {
+  const body = document.getElementById("completedBody");
+  body.innerHTML = "";
 
-    completedOrders.forEach((order, index) => {
+  snapshot.forEach((doc) => {
+    const order = doc.data();
 
-    const row =
-    document.createElement("tr");
-
-    row.innerHTML = `
+    body.innerHTML += `
+      <tr>
         <td>${order.time}</td>
-        <td>${order.course}</td>        
+        <td>${order.course}</td>
         <td>${order.people}名</td>
         <td>${order.table}</td>
         <td>${order.completedTime}</td>
         <td>
-            <button onclick="restoreOrder(${index})">
-                戻す
-            </button>
+          <button onclick="restoreOrder('${doc.id}')">戻す</button>
         </td>
+      </tr>
     `;
-
-    completedBody.appendChild(row);
-
-});
+  });
 }
 
 function moveUp(index){
@@ -382,5 +357,15 @@ window.updateCourse = updateCourse;
 window.toggleDish = toggleDish;
 window.restoreOrder = restoreOrder;
 
+
+window.db.collection("orders")
+  .onSnapshot((snapshot) => {
+    renderOrders(snapshot);
+  });
+
+window.db.collection("completedOrders")
+  .onSnapshot((snapshot) => {
+    renderCompleted(snapshot);
+  });
 
 
