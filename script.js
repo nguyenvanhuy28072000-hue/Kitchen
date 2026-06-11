@@ -108,8 +108,9 @@ if(tableNo === ""){
 
 
 orders.push({
+     time: courseTime,
     course: course,
-    time: courseTime,
+   
     people: people,
     table: tableNo,
     dishes: courseData[course].map(dish => ({
@@ -211,7 +212,12 @@ function render(){
     <td>
         <button onclick="deleteOrder(${orderIndex})">削除</button> 
     </td>
-
+    
+   <td>
+        <input type="time"
+            value="${order.time}"
+            onchange="updateField(${orderIndex}, 'time', this.value)">
+    </td>
 
     <td>
         <select onchange="updateCourse(${orderIndex}, this.value)">
@@ -224,11 +230,7 @@ function render(){
     </td>
 
 
-   <td>
-        <input type="time"
-            value="${order.time}"
-            onchange="updateField(${orderIndex}, 'time', this.value)">
-    </td>
+
 
 
     <td>
@@ -280,8 +282,9 @@ function render(){
     document.createElement("tr");
 
     row.innerHTML = `
+    <td>${order.time}</td>
         <td>${order.course}</td>
-        <td>${order.time}</td>
+        
         <td>${order.people}名</td>
         <td>${order.table}</td>
         <td>${order.completedTime}</td>
