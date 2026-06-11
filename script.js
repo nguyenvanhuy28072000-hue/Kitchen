@@ -45,7 +45,6 @@ function addCourse() {
   people: Number(people),
   table,
 
-  sortOrder: Date.now() * 1000,
 
   dishes: courseData[course].map(d => ({
     name: d,
@@ -98,12 +97,6 @@ function renderOrders(snapshot) {
     let html = `
       <tr>
 
-/*
-        <td>
-  <button onclick="moveUp('${id}')">△</button>
-  <button onclick="moveDown('${id}')">▽</button>
-        </td>
-*/
 <td>
   <button onclick="addExtraDish('${id}')">
     ＋料理
@@ -555,8 +548,6 @@ function moveDishRight(orderId,index){
 
 window.addCourse = addCourse;
 window.deleteOrder = deleteOrder;
-window.moveUp = moveUp;
-window.moveDown = moveDown;
 window.updateField = updateField;
 window.updateCourse = updateCourse;
 window.toggleDish = toggleDish;
