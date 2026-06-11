@@ -124,6 +124,15 @@ function renderOrders(snapshot) {
   });
 }
 
+   function updateField(orderId, field, value) {
+  const ref = window.db.collection("orders").doc(orderId);
+
+  ref.update({
+    [field]: field === "people" ? Number(value) : value
+  });
+}
+
+
 window.db.collection("completedOrders")
   .onSnapshot((snapshot) => {
     renderCompleted(snapshot);
@@ -188,14 +197,6 @@ function restoreOrder(id) {
 
       delete data.completedTime;
       delete data.completedAt;
-
-      function updateField(orderId, field, value) {
-  const ref = window.db.collection("orders").doc(orderId);
-
-  ref.update({
-    [field]: field === "people" ? Number(value) : value
-  });
-}
       
       window.db.collection("orders").add(data);
 
