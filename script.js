@@ -45,7 +45,7 @@ function addCourse() {
   people: Number(people),
   table,
 
-  sortOrder: Date.now(),
+  sortOrder: Date.now() * 1000,
 
   dishes: courseData[course].map(d => ({
     name: d,
@@ -70,7 +70,12 @@ function renderOrders(snapshot) {
   const body = document.getElementById("courseBody");
   body.innerHTML = "";
 
-  snapshot.forEach(doc => {
+  snapshot.docs
+    .sort((a,b)=>
+      (a.data().sortOrder || 0) -
+      (b.data().sortOrder || 0)
+    )
+    .forEach(doc => {
     const order = doc.data();
     const id = doc.id;
 
@@ -147,6 +152,20 @@ function renderOrders(snapshot) {
         </td>
       `;
     });
+
+if(order.extraDishes){
+
+  order.extraDishes.forEach((dish,i)=>{
+
+    html += `
+      <td class="dish ${dish.done ? 'done' : ''}">
+        ★${dish.name}
+      </td>
+    `;
+
+  });
+
+}
 
     html += `</tr>`;
 
