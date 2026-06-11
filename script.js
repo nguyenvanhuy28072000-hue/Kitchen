@@ -40,16 +40,22 @@ function addCourse() {
   }
 
   window.db.collection("orders").add({
-    time,
-    course,
-    people: Number(people),
-    table,
-    dishes: courseData[course].map(d => ({
-      name: d,
-      done: false
-    })),
-    createdAt: Date.now()
-  });
+  time,
+  course,
+  people: Number(people),
+  table,
+
+  sortOrder: Date.now(),
+
+  dishes: courseData[course].map(d => ({
+    name: d,
+    done: false
+  })),
+
+  extraDishes: [],
+
+  createdAt: Date.now()
+});
 
   document.getElementById("people").value = "";
   document.getElementById("tableNo").value = "";
@@ -83,8 +89,21 @@ function renderOrders(snapshot) {
       <tr>
 
         <td>
-          <button onclick="deleteOrder('${id}')">削除</button>
-        </td>
+  <button onclick="moveUp('${id}')">△</button>
+  <button onclick="moveDown('${id}')">▽</button>
+</td>
+
+<td>
+  <button onclick="addExtraDish('${id}')">
+    ＋料理
+  </button>
+</td>
+
+<td>
+  <button onclick="deleteOrder('${id}')">
+    削除
+  </button>
+</td>
 
         <td>
           <input type="time"
@@ -92,7 +111,18 @@ function renderOrders(snapshot) {
             onchange="updateField('${id}','time',this.value)">
         </td>
 
-        <td>${order.course}</td>
+        <td>
+<select onchange="updateCourse('${id}',this.value)">
+
+<option value="当日" ${order.course==="当日"?"selected":""}>当日</option>
+<option value="4000円" ${order.course==="4000円"?"selected":""}>4000円</option>
+<option value="4500円" ${order.course==="4500円"?"selected":""}>4500円</option>
+<option value="5000円" ${order.course==="5000円"?"selected":""}>5000円</option>
+<option value="6000円" ${order.course==="6000円"?"selected":""}>6000円</option>
+<option value="7000円" ${order.course==="7000円"?"selected":""}>7000円</option>
+
+</select>
+</td>
 
         <td>
           <input type="number"
@@ -142,7 +172,12 @@ function renderCompleted(snapshot) {
   const body = document.getElementById("completedBody");
   body.innerHTML = "";
 
-  snapshot.forEach(doc => {
+  snapshot.docs
+.sort((a,b)=>
+ (a.data().sortOrder || 0) -
+ (b.data().sortOrder || 0)
+)
+.forEach(doc=>{
     const d = doc.data();
 
     body.innerHTML += `
@@ -202,6 +237,86 @@ function restoreOrder(id) {
 
       window.db.collection("completedOrders").doc(id).delete();
     });
+}
+
+function addExtraDish(orderId){
+
+  const name = prompt("追加料理名");
+
+  if(!name) return;
+
+  const ref =
+    window.db.collection("orders").doc(orderId);
+
+  ref.get().then(doc=>{
+
+    const data = doc.data();
+
+    const extra =
+      data.extraDishes || [];
+
+    extra.push({
+      name:name,
+      done:false
+    });
+
+    ref.update({
+      extraDishes:extra
+    });
+
+  });
+
+}
+
+function updateCourse(orderId, newCourse) {
+
+  window.db.collection("orders")
+    .doc(orderId)
+    .update({
+
+      course: newCourse,
+
+      dishes: courseData[newCourse].map(d => ({
+        name: d,
+        done: false
+      }))
+
+    });
+
+}
+
+function moveUp(id){
+
+  const ref =
+    window.db.collection("orders").doc(id);
+
+  ref.get().then(doc=>{
+
+    const data = doc.data();
+
+    ref.update({
+      sortOrder:(data.sortOrder || 0)-1000
+    });
+
+  });
+
+}
+
+function moveDown(id){
+
+  const ref =
+    window.db.collection("orders").doc(id);
+
+  ref.get().then(doc=>{
+
+    const data = doc.data();
+
+    ref.update({
+      sortOrder:(data.sortOrder || 0)+1000
+    });
+
+  });
+
 }
 
 window.addCourse = addCourse;
