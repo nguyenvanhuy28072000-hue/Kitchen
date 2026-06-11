@@ -333,20 +333,12 @@ function restoreOrder(id) {
 function addExtraDish(orderId){
 
   const choice = prompt(
-    "追加料理を選択\n\n1: 焼き鳥\n2: 宮炭"
+`追加料理を選択
+
+0: 削除
+1: 焼き鳥
+2: 宮炭`
   );
-
-  let name = "";
-
-  if(choice === "1"){
-    name = "焼き鳥";
-  }
-  else if(choice === "2"){
-    name = "宮炭";
-  }
-  else{
-    return;
-  }
 
   const ref =
     window.db.collection("orders").doc(orderId);
@@ -355,8 +347,32 @@ function addExtraDish(orderId){
 
     const data = doc.data();
 
-    const extra =
+    let extra =
       data.extraDishes || [];
+
+    // 0なら最後の追加料理を削除
+    if(choice === "0"){
+
+      if(extra.length === 0){
+        alert("追加料理がありません");
+        return;
+      }
+
+      extra.pop();
+
+      ref.update({
+        extraDishes: extra
+      });
+
+      return;
+    }
+
+    let name = "";
+
+    if(choice === "1") name = "焼き鳥";
+    if(choice === "2") name = "宮炭";
+
+    if(!name) return;
 
     extra.push({
       name:name,
@@ -364,7 +380,7 @@ function addExtraDish(orderId){
     });
 
     ref.update({
-      extraDishes:extra
+      extraDishes: extra
     });
 
   });
