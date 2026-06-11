@@ -98,11 +98,12 @@ function renderOrders(snapshot) {
     let html = `
       <tr>
 
+/*
         <td>
   <button onclick="moveUp('${id}')">△</button>
   <button onclick="moveDown('${id}')">▽</button>
-</td>
-
+        </td>
+*/
 <td>
   <button onclick="addExtraDish('${id}')">
     ＋料理
