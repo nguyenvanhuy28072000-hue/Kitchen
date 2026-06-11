@@ -151,17 +151,15 @@ function renderOrders(snapshot) {
 
     order.dishes.forEach((dish, i) => {
       html += `
-        <td>
-  <button onclick="moveDishLeft('${id}',${i})">◀</button>
-</td>
-
-<td class="dish dish${i} ${dish.done ? "done" : ""}"
-    onclick="toggleDish('${id}',${i})">
+        <td
+  class="dish dish${i} ${dish.done ? "done" : ""}"
+  draggable="true"
+  ondragstart="dragDish('${id}',${i})"
+  ondragover="event.preventDefault()"
+  ondrop="dropDish('${id}',${i})"
+  onclick="toggleDish('${id}',${i})"
+>
   ${dish.name}
-</td>
-
-<td>
-  <button onclick="moveDishRight('${id}',${i})">▶</button>
 </td>
       `;
     });
@@ -225,6 +223,41 @@ function renderCompleted(snapshot) {
       </tr>
     `;
   });
+}
+let dragIndex = null;
+let dragOrderId = null;
+
+function dragDish(orderId,index){
+
+  dragIndex = index;
+  dragOrderId = orderId;
+
+}
+
+function dropDish(orderId,targetIndex){
+
+  if(orderId !== dragOrderId) return;
+
+  const ref =
+    window.db.collection("orders").doc(orderId);
+
+  ref.get().then(doc=>{
+
+    const data = doc.data();
+
+    const dishes = data.dishes;
+
+    const moved =
+      dishes.splice(dragIndex,1)[0];
+
+    dishes.splice(targetIndex,0,moved);
+
+    ref.update({
+      dishes:dishes
+    });
+
+  });
+
 }
 
 function toggleDish(orderId, index) {
@@ -427,3 +460,5 @@ window.toggleDish = toggleDish;
 window.restoreOrder = restoreOrder;
 window.moveDishLeft = moveDishLeft;
 window.moveDishRight = moveDishRight;
+window.dragDish = dragDish;
+window.dropDish = dropDish;
