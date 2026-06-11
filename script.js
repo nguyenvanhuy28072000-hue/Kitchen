@@ -169,7 +169,10 @@ if(order.extraDishes){
   order.extraDishes.forEach((dish,i)=>{
 
     html += `
-      <td class="dish ${dish.done ? 'done' : ''}">
+      <td
+        class="dish ${dish.done ? 'done' : ''}"
+        onclick="toggleExtraDish('${id}',${i})"
+      >
         ★${dish.name}
       </td>
     `;
@@ -282,6 +285,29 @@ function toggleDish(orderId, index) {
       ref.update({ dishes: data.dishes });
     }
   });
+}
+
+function toggleExtraDish(orderId,index){
+
+  const ref =
+    window.db.collection("orders").doc(orderId);
+
+  ref.get().then(doc=>{
+
+    const data = doc.data();
+
+    const extra =
+      data.extraDishes || [];
+
+    extra[index].done =
+      !extra[index].done;
+
+    ref.update({
+      extraDishes:extra
+    });
+
+  });
+
 }
 
 function deleteOrder(id) {
@@ -462,3 +488,4 @@ window.moveDishLeft = moveDishLeft;
 window.moveDishRight = moveDishRight;
 window.dragDish = dragDish;
 window.dropDish = dropDish;
+window.toggleExtraDish = toggleExtraDish;
