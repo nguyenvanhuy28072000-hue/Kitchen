@@ -19,9 +19,7 @@
             .controls{
                 margin-bottom:3px;     /*入力項目ごとの下の余白をあける*/
             }
-
-
-            
+ 
             select,button{      /*選択、クリックボタン*/
                 padding:6px;   /*[内側」の余白*/
                 font-size:16px;  /*文字サイズ*/
@@ -110,9 +108,6 @@
                 
         </style>
 
-
-
-
 </head>
 <body>
 
@@ -131,10 +126,10 @@
         </select>
 
             
-            <input type="number" id="people" placeholder="人数" style="width: 50px;" min = 1>
-            <input type="text" id="tableNo" placeholder="テーブル">
+ <input type="number" id="people" placeholder="人数" style="width: 50px;" min = 1>
+ <input type="text" id="tableNo" placeholder="テーブル">
 
-            <button onclick="addCourse()">追加</button>
+ <button onclick="addCourse()">追加</button>
 
     </div>
         <table>
@@ -165,23 +160,23 @@
         <h3>完了コース</h3>
 
 <table>
-<thead>
-<tr>
-　　<th>時間</th>
-    <th>コース</th>  
-    <th>人数</th>
-    <th>卓番</th>
-    <th>完了時間</th>
-　　<th>操作</th>
-</tr>
-</thead>
+        <thead>
+                <tr>
+                　　<th>時間</th>
+                    <th>コース</th>  
+                    <th>人数</th>
+                    <th>卓番</th>
+                    <th>完了時間</th>
+                　　<th>操作</th>
+                </tr>
+        </thead>
 
-<tbody id="completedBody">
-</tbody>
+<tbody id="completedBody"></tbody>
+        
 </table>
         
-<script type="module" src="firebase.js"></script>
-<script  type="module" src="script.js"></script>
+        <script type="module" src="firebase.js"></script>
+        <script  type="module" src="script.js"></script>
 
 </body>
 </html>
