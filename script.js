@@ -215,6 +215,19 @@ function renderCompleted(snapshot) {
 .forEach(doc=>{
     const d = doc.data();
 
+if(
+  d.completedAt &&
+  Date.now() - d.completedAt >
+  60 * 60 * 1000
+){
+  window.db
+    .collection("completedOrders")
+    .doc(doc.id)
+    .delete();
+
+  return;
+}
+
     body.innerHTML += `
       <tr>
         <td>${d.time}</td>
