@@ -71,11 +71,16 @@ function renderOrders(snapshot) {
   body.innerHTML = "";
 
   snapshot.docs
-    .sort((a,b)=>
-      (a.data().sortOrder || 0) -
-      (b.data().sortOrder || 0)
-    )
-    .forEach(doc => {
+.sort((a,b)=>{
+  const timeCompare =
+    a.data().time.localeCompare(b.data().time);
+
+  if(timeCompare !== 0) return timeCompare;
+
+  return (a.data().createdAt || 0) -
+         (b.data().createdAt || 0);
+})
+.forEach(doc=>{
     const order = doc.data();
     const id = doc.id;
 
