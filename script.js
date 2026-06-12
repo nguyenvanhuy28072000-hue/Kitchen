@@ -109,6 +109,31 @@ else if(remainMinutes <= 30){
   loClass = "loYellow";
 }
 
+const startMinutes =
+  Number(h) * 60 + Number(m);
+
+const nowMinutes =
+  now.getHours() * 60 +
+  now.getMinutes();
+
+const duration =
+  courseDuration[order.course];
+
+let progress =
+  ((nowMinutes - startMinutes) / duration) * 100;
+
+if(progress < 0) progress = 0;
+if(progress > 100) progress = 100;
+
+let progressClass = "";
+
+if(remainMinutes <= 10){
+  progressClass = "progressRed";
+}
+else if(remainMinutes <= 30){
+  progressClass = "progressYellow";
+}
+
     let html = `
       <tr>
 
@@ -203,7 +228,22 @@ if(order.extraDishes){
 
 }
 
-    html += `</tr>`;
+    html += `
+</tr>
+
+<tr>
+  <td colspan="20">
+
+    <div class="progressWrap">
+      <div
+        class="progressBar ${progressClass}"
+        style="width:${progress}%">
+      </div>
+    </div>
+
+  </td>
+</tr>
+`;
 
     body.innerHTML += html;
   });
@@ -475,39 +515,6 @@ function updateCourse(orderId, newCourse) {
 
 }
 
-function moveUp(id){
-
-  const ref =
-    window.db.collection("orders").doc(id);
-
-  ref.get().then(doc=>{
-
-    const data = doc.data();
-
-    ref.update({
-      sortOrder:(data.sortOrder || 0)-1000
-    });
-
-  });
-
-}
-
-function moveDown(id){
-
-  const ref =
-    window.db.collection("orders").doc(id);
-
-  ref.get().then(doc=>{
-
-    const data = doc.data();
-
-    ref.update({
-      sortOrder:(data.sortOrder || 0)+1000
-    });
-
-  });
-
-}
 
 function moveDishLeft(orderId,index){
 
