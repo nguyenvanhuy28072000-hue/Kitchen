@@ -40,20 +40,20 @@ function addCourse() {
   }
 
   window.db.collection("orders").add({
-  time,
-  course,
-  people: Number(people),
-  table,
-
-
-  dishes: courseData[course].map(d => ({
-    name: d,
-    done: false
-  })),
-
-  extraDishes: [],
-
-  createdAt: Date.now()
+    time,
+    course,
+    people: Number(people),
+    table,
+  
+  
+    dishes: courseData[course].map(d => ({
+      name: d,
+      done: false
+    })),
+  
+    extraDishes: [],
+  
+    createdAt: Date.now()
 });
 
   document.getElementById("people").value = "";
@@ -112,17 +112,17 @@ else if(remainMinutes <= 30){
     let html = `
       <tr>
 
-<td>
-  <button onclick="addExtraDish('${id}')">
-    ＋料理
-  </button>
-</td>
-
-<td>
-  <button onclick="deleteOrder('${id}')">
-    削除
-  </button>
-</td>
+        <td>
+          <button onclick="addExtraDish('${id}')">
+            ＋料理
+          </button>
+        </td>
+        
+        <td>
+          <button onclick="deleteOrder('${id}')">
+            削除
+          </button>
+        </td>
 
         <td>
           <input type="time"
@@ -131,25 +131,25 @@ else if(remainMinutes <= 30){
         </td>
 
         <td>
-<select onchange="updateCourse('${id}',this.value)">
-
-<option value="当日" ${order.course==="当日"?"selected":""}>当日</option>
-<option value="4000円" ${order.course==="4000円"?"selected":""}>4000円</option>
-<option value="4500円" ${order.course==="4500円"?"selected":""}>4500円</option>
-<option value="5000円" ${order.course==="5000円"?"selected":""}>5000円</option>
-<option value="6000円" ${order.course==="6000円"?"selected":""}>6000円</option>
-<option value="7000円" ${order.course==="7000円"?"selected":""}>7000円</option>
-
-</select>
-</td>
+          <select onchange="updateCourse('${id}',this.value)">
+          
+          <option value="当日" ${order.course==="当日"?"selected":""}>当日</option>
+          <option value="4000円" ${order.course==="4000円"?"selected":""}>4000円</option>
+          <option value="4500円" ${order.course==="4500円"?"selected":""}>4500円</option>
+          <option value="5000円" ${order.course==="5000円"?"selected":""}>5000円</option>
+          <option value="6000円" ${order.course==="6000円"?"selected":""}>6000円</option>
+          <option value="7000円" ${order.course==="7000円"?"selected":""}>7000円</option>
+          
+          </select>
+        </td>
 
         <td>
-  <input type="number"
-    value="${order.people}"
-    onchange="updateField('${id}','people',this.value)"
-    style="width:50px;">
-  名
-</td>
+          <input type="number"
+            value="${order.people}"
+            onchange="updateField('${id}','people',this.value)"
+            style="width:50px;">
+          名
+        </td>
 
         <td>
           <input type="text"
@@ -165,15 +165,15 @@ else if(remainMinutes <= 30){
     order.dishes.forEach((dish, i) => {
       html += `
         <td
-  class="dish dish${i} ${dish.done ? "done" : ""}"
-  draggable="true"
-  ondragstart="dragDish('${id}',${i})"
-  ondragover="event.preventDefault()"
-  ondrop="dropDish('${id}',${i})"
-  onclick="toggleDish('${id}',${i})"
->
-  ${dish.name}
-</td>
+            class="dish dish${i} ${dish.done ? "done" : ""}"
+            draggable="true"
+            ondragstart="dragDish('${id}',${i})"
+            ondragover="event.preventDefault()"
+            ondrop="dropDish('${id}',${i})"
+            onclick="toggleDish('${id}',${i})"
+          >
+            ${dish.name}
+        </td>
       `;
     });
 
@@ -183,20 +183,20 @@ if(order.extraDishes){
 
     html += `
       <td
-  class="dish extraDish ${dish.done ? 'done' : ''}"
-
-  draggable="true"
-
-  ondragstart="dragExtraDish('${id}',${i})"
-
-  ondragover="event.preventDefault()"
-
-  ondrop="dropExtraDish('${id}',${i})"
-
-  onclick="toggleExtraDish('${id}',${i})"
->
-  ★${dish.name}
-</td>
+        class="dish extraDish ${dish.done ? 'done' : ''}"
+      
+        draggable="true"
+      
+        ondragstart="dragExtraDish('${id}',${i})"
+      
+        ondragover="event.preventDefault()"
+      
+        ondrop="dropExtraDish('${id}',${i})"
+      
+        onclick="toggleExtraDish('${id}',${i})"
+      >
+        ★${dish.name}
+      </td>
     `;
 
   });
