@@ -233,9 +233,9 @@ if(order.extraDishes){
 
 <tr>
 
-  <td colspan="7"></td>
+  <td colspan="8"></td>
 
-  <td colspan="10">
+  <td colspan="20">
 
     <div class="progressWrap">
       <div
