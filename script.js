@@ -99,13 +99,21 @@ const now = new Date();
 const remainMinutes =
   Math.floor((lo.getTime() - now.getTime()) / 60000);
 
+const startMinutes =
+  Number(h) * 60 + Number(m);
 
-let t = (nowMinutes - startMinutes) / duration;
+const nowMinutes =
+  now.getHours() * 60 +
+  now.getMinutes();
 
-// 0〜1に制限
-t = Math.min(1, Math.max(0, t));
+const duration =
+  courseDuration[order.course];
 
-let progress = t * 100;
+let progress =
+  ((nowMinutes - startMinutes) / duration) * 100;
+
+if(progress < 0) progress = 0;
+if(progress > 100) progress = 100;
 
 let loClass = "";
 let progressClass = "";
@@ -257,7 +265,6 @@ if(order.extraDishes){
     [field]: field === "people" ? Number(value) : value
   });
 }
-
 
 window.db.collection("completedOrders")
   .onSnapshot((snapshot) => {
@@ -515,7 +522,6 @@ function updateCourse(orderId, newCourse) {
     });
 
 }
-
 
 function moveDishLeft(orderId,index){
 
