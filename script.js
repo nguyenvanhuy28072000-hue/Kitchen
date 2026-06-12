@@ -100,17 +100,6 @@ const remainMinutes =
   Math.floor((lo.getTime() - now.getTime()) / 60000);
 
 
-
-const startMinutes =
-  Number(h) * 60 + Number(m);
-
-const nowMinutes =
-  now.getHours() * 60 +
-  now.getMinutes();
-
-const duration =
-  courseDuration[order.course];
-
 const [h, m] = order.time.split(":");
 
 const startMinutes = Number(h) * 60 + Number(m);
