@@ -108,7 +108,9 @@ const nowMinutes =
 
 const duration =
   courseDuration[order.course];
-
+const totalCols =
+  order.dishes.length +
+  (order.extraDishes?.length || 0);
 let progress =
   ((nowMinutes - startMinutes) / duration) * 100;
 
@@ -240,7 +242,7 @@ if(order.extraDishes){
 
   <td colspan="7"></td>
 
-  <td colspan="20">
+  <td colspan="${totalCols}">
 
     <div class="progressWrap">
       <div
