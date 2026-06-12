@@ -111,8 +111,11 @@ const nowMinutes =
 const duration =
   courseDuration[order.course];
 
-let progress =
-  ((nowMinutes - startMinutes) / duration) * 100;
+const totalDishCount = order.dishes.length;
+
+const doneCount = order.dishes.filter(d => d.done).length;
+
+let progress = (doneCount / totalDishCount) * 100;
 
 if(progress < 0) progress = 0;
 if(progress > 100) progress = 100;
