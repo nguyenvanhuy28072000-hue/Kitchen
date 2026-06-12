@@ -94,6 +94,20 @@ function renderOrders(snapshot) {
       ":" +
       lo.getMinutes().toString().padStart(2,"0");
 
+const now = new Date();
+
+const remainMinutes =
+  Math.floor((lo.getTime() - now.getTime()) / 60000);
+
+let loClass = "";
+
+if(remainMinutes <= 10){
+  loClass = "loRed";
+}
+else if(remainMinutes <= 30){
+  loClass = "loYellow";
+}
+
     let html = `
       <tr>
 
@@ -142,7 +156,9 @@ function renderOrders(snapshot) {
             onchange="updateField('${id}','table',this.value)">
         </td>
 
-        <td>${loText}</td>
+        <td class="${loClass}">
+            ${loText}
+        </td>
     `;
 
     order.dishes.forEach((dish, i) => {
@@ -559,3 +575,12 @@ window.dropDish = dropDish;
 window.toggleExtraDish = toggleExtraDish;
 window.dragExtraDish = dragExtraDish;
 window.dropExtraDish = dropExtraDish;
+
+setInterval(() => {
+
+  window.db.collection("orders").get()
+    .then(snapshot => {
+      renderOrders(snapshot);
+    });
+
+}, 60000);
