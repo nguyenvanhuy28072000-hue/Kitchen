@@ -89,7 +89,7 @@ function renderOrders(snapshot) {
     lo.setHours(Number(h));
     lo.setMinutes(Number(m) + courseDuration[order.course]);
 
-    const loText =
+    let loText =
       lo.getHours().toString().padStart(2,"0") +
       ":" +
       lo.getMinutes().toString().padStart(2,"0");
