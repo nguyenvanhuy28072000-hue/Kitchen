@@ -232,7 +232,10 @@ if(order.extraDishes){
 </tr>
 
 <tr>
-  <td colspan="20">
+
+  <td colspan="7"></td>
+
+  <td colspan="10">
 
     <div class="progressWrap">
       <div
@@ -242,6 +245,7 @@ if(order.extraDishes){
     </div>
 
   </td>
+
 </tr>
 `;
 
