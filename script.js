@@ -111,21 +111,20 @@ const nowMinutes =
 const duration =
   courseDuration[order.course];
 
-const totalDishCount = order.dishes.length;
+const [h, m] = order.time.split(":");
 
-const total = order.dishes.length;
+const startMinutes = Number(h) * 60 + Number(m);
 
-let lastDoneIndex = order.dishes
-  .map((d, i) => d.done ? i : -1)
-  .filter(i => i !== -1)
-  .pop();
+const nowMinutes = now.getHours() * 60 + now.getMinutes();
 
-if (lastDoneIndex === undefined) lastDoneIndex = -1;
+const duration = courseDuration[order.course];
 
-let progress = ((lastDoneIndex + 1) / total) * 100;
+let t = (nowMinutes - startMinutes) / duration;
 
-if(progress < 0) progress = 0;
-if(progress > 100) progress = 100;
+// 0〜1に制限
+t = Math.min(1, Math.max(0, t));
+
+let progress = t * 100;
 
 let loClass = "";
 let progressClass = "";
