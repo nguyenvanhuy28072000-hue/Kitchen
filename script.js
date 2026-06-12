@@ -99,15 +99,7 @@ const now = new Date();
 const remainMinutes =
   Math.floor((lo.getTime() - now.getTime()) / 60000);
 
-let loClass = "";
 
-if(remainMinutes <= 10){
-  loClass = "loRed";
-  loText = "L.O.過ぎ";
-}
-else if(remainMinutes <= 30){
-  loClass = "loYellow";
-}
 
 const startMinutes =
   Number(h) * 60 + Number(m);
@@ -125,17 +117,28 @@ let progress =
 if(progress < 0) progress = 0;
 if(progress > 100) progress = 100;
 
+let loClass = "";
 let progressClass = "";
 
 if(remainMinutes < 0){
+
   loClass = "loRed";
   loText = "L.O.過ぎ";
+
+  progressClass = "progressRed";
+
 }
 else if(remainMinutes <= 10){
+
   loClass = "loRed";
+  progressClass = "progressRed";
+
 }
 else if(remainMinutes <= 30){
+
   loClass = "loYellow";
+  progressClass = "progressYellow";
+
 }
 
     let html = `
