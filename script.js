@@ -103,6 +103,7 @@ let loClass = "";
 
 if(remainMinutes <= 10){
   loClass = "loRed";
+  loText = "L.O.過ぎ";
 }
 else if(remainMinutes <= 30){
   loClass = "loYellow";
