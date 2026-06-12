@@ -113,9 +113,16 @@ const duration =
 
 const totalDishCount = order.dishes.length;
 
-const doneCount = order.dishes.filter(d => d.done).length;
+const total = order.dishes.length;
 
-let progress = (doneCount / totalDishCount) * 100;
+let lastDoneIndex = order.dishes
+  .map((d, i) => d.done ? i : -1)
+  .filter(i => i !== -1)
+  .pop();
+
+if (lastDoneIndex === undefined) lastDoneIndex = -1;
+
+let progress = ((lastDoneIndex + 1) / total) * 100;
 
 if(progress < 0) progress = 0;
 if(progress > 100) progress = 100;
