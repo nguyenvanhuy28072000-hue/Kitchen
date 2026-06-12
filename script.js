@@ -233,7 +233,7 @@ if(order.extraDishes){
 
 <tr>
 
-  <td colspan="8"></td>
+  <td colspan="7"></td>
 
   <td colspan="20">
 
