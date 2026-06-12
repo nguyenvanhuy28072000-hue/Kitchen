@@ -127,11 +127,15 @@ if(progress > 100) progress = 100;
 
 let progressClass = "";
 
-if(remainMinutes <= 10){
-  progressClass = "progressRed";
+if(remainMinutes < 0){
+  loClass = "loRed";
+  loText = "L.O.過ぎ";
+}
+else if(remainMinutes <= 10){
+  loClass = "loRed";
 }
 else if(remainMinutes <= 30){
-  progressClass = "progressYellow";
+  loClass = "loYellow";
 }
 
     let html = `
