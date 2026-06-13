@@ -110,7 +110,7 @@ const duration =
   courseDuration[order.course];
 const totalCols =
   order.dishes.length +
-  (order.extraDishes?.length || 0);
+  ((order.extraDishes && order.extraDishes.length) || 0);
 let progress =
   ((nowMinutes - startMinutes) / duration) * 100;
 
