@@ -61,12 +61,12 @@ function addCourse() {
   //料理一覧生成。
     dishes: courseData[course].map(d => ({
       name: d,
-      done: false. //未提供状態。
+      done: false, //未提供状態。
     })),
   
     extraDishes: [],  //追加料理用。
   
-    createdAt: Date.now(). //登録時刻保存。
+    createdAt: Date.now() //登録時刻保存。
 });
 
   document.getElementById("people").value = "";
@@ -236,7 +236,7 @@ else if(remainMinutes <= 30){
             ondragstart="dragDish('${id}',${i})"
             ondragover="event.preventDefault()"
             ondrop="dropDish('${id}',${i})"
-            onclick="toggleDish('${id}',${i})". 
+            onclick="toggleDish('${id}',${i})"
           >
             ${dish.name}
         </td>
