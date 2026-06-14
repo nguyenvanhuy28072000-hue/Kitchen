@@ -1,3 +1,5 @@
+//① コース内容の定義
+//各コースにどんな料理が入っているかを登録。
 const courseData = {
 "当日":[
   "お造り","サラダ","焼き鳥２種","串揚げ３種","デザート"
@@ -19,6 +21,8 @@ const courseData = {
 ]
 };
 
+//② コース時間の定義
+//コース開始からL.O.までの時間。
 const courseDuration = {
   "当日":70,
   "4000円":90,
@@ -28,66 +32,83 @@ const courseDuration = {
   "7000円":120
 };
 
+//③ コース追加
+//「追加」ボタンを押した時の処理。
 function addCourse() {
+  //開始時間取得。
   const time = document.getElementById("courseTime").value;
+  //コース取得。
   const course = document.getElementById("courseSelect").value;
+  //人数取得。
   const people = document.getElementById("people").value;
+  //卓番号取得。
   const table = document.getElementById("tableNo").value;
 
+  //未入力チェック
   if (!time || !course || !people || !table) {
-    alert("未入力があります");
+    alert("未入力があります");  //どれか空なら表示
     return;
   }
 
+//注文データ作成。
   window.db.collection("orders").add({
+    //基本情報
     time,
     course,
     people: Number(people),
     table,
   
-  
+  //料理一覧生成。
     dishes: courseData[course].map(d => ({
       name: d,
-      done: false
+      done: false. //未提供状態。
     })),
   
-    extraDishes: [],
+    extraDishes: [],  //追加料理用。
   
-    createdAt: Date.now()
+    createdAt: Date.now(). //登録時刻保存。
 });
 
   document.getElementById("people").value = "";
   document.getElementById("tableNo").value = "";
 }
 
+//④ リアルタイム監視
 window.db.collection("orders")
   .onSnapshot((snapshot) => {
-    renderOrders(snapshot);
+    renderOrders(snapshot); //注文が増えたり削除されたら自動更新
   });
 
+//⑤ 注文表示
+//画面表示担当。
 function renderOrders(snapshot) {
   const body = document.getElementById("courseBody");
   body.innerHTML = "";
 
   snapshot.docs
-.sort((a,b)=>{
+  
+  //並び替え
+  .sort((a,b)=>{
   const timeCompare =
-    a.data().time.localeCompare(b.data().time);
+    a.data().time.localeCompare(b.data().time);  //時間順
 
   if(timeCompare !== 0) return timeCompare;
 
+  //同じ時間なら
   return (a.data().createdAt || 0) -
          (b.data().createdAt || 0);
 })
+
+//⑥ラストオーダー計算
 .forEach(doc=>{
     const order = doc.data();
     const id = doc.id;
 
-    const [h, m] = order.time.split(":");
+    const [h, m] = order.time.split(":");  //開始時刻分解。h=hour,m=minues
 
-    const lo = new Date();
+    const lo = new Date(); //日時作成。
     lo.setHours(Number(h));
-    lo.setMinutes(Number(m) + courseDuration[order.course]);
+    lo.setMinutes(Number(m) + courseDuration[order.course]); //コース時間加算。
 
     let loText =
       lo.getHours().toString().padStart(2,"0") +
@@ -96,21 +117,29 @@ function renderOrders(snapshot) {
 
 const now = new Date();
 
+//⑦ 残り時間計算
+// 残り時間計算(L.Oまで何分か。)
 const remainMinutes =
   Math.floor((lo.getTime() - now.getTime()) / 60000);
 
+//⑧進捗バー計算
+//開始時刻。
 const startMinutes =
   Number(h) * 60 + Number(m);
 
+//現在時刻。
 const nowMinutes =
   now.getHours() * 60 +
   now.getMinutes();
 
+//コース時間。
 const duration =
   courseDuration[order.course];
 const totalCols =
   order.dishes.length +
   ((order.extraDishes && order.extraDishes.length) || 0);
+
+//進捗率。
 let progress =
   ((nowMinutes - startMinutes) / duration) * 100;
 
