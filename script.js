@@ -149,6 +149,8 @@ if(progress > 100) progress = 100;
 let loClass = "";
 let progressClass = "";
 
+//⑩ 色変更
+//L.O超過。
 if(remainMinutes < 0){
 
   loClass = "loRed";
@@ -159,14 +161,14 @@ if(remainMinutes < 0){
 }
 else if(remainMinutes <= 10){
 
-  loClass = "loRed";
-  progressClass = "progressRed";
+  loClass = "loRed"; 
+  progressClass = "progressRed";  //バー赤。
 
 }
 else if(remainMinutes <= 30){
 
   loClass = "loYellow";
-  progressClass = "progressYellow";
+  progressClass = "progressYellow"; //黄色。
 
 }
 
@@ -223,21 +225,25 @@ else if(remainMinutes <= 30){
         </td>
     `;
 
+//⑪ 料理表示
+    //料理を1セルずつ作成
     order.dishes.forEach((dish, i) => {
       html += `
+      
         <td
             class="dish dish${i} ${dish.done ? "done" : ""}"
             draggable="true"
             ondragstart="dragDish('${id}',${i})"
             ondragover="event.preventDefault()"
             ondrop="dropDish('${id}',${i})"
-            onclick="toggleDish('${id}',${i})"
+            onclick="toggleDish('${id}',${i})". 
           >
             ${dish.name}
         </td>
       `;
     });
-
+    
+//⑫ 追加料理表示
 if(order.extraDishes){
 
   order.extraDishes.forEach((dish,i)=>{
@@ -267,12 +273,13 @@ if(order.extraDishes){
     html += `
 </tr>
 
+
 <tr>
 
   <td colspan="7"></td>
 
   <td colspan="${totalCols}">
-
+  
     <div class="progressWrap">
       <div
         class="progressBar ${progressClass}"
@@ -289,6 +296,7 @@ if(order.extraDishes){
   });
 }
 
+//⑭ 更新処理
    function updateField(orderId, field, value) {
   const ref = window.db.collection("orders").doc(orderId);
 
@@ -302,6 +310,7 @@ window.db.collection("completedOrders")
     renderCompleted(snapshot);
   });
 
+//⑮ 完了済み表示
 function renderCompleted(snapshot) {
   const body = document.getElementById("completedBody");
   body.innerHTML = "";
@@ -346,13 +355,15 @@ let dragExtraIndex = null;
 let dragExtraOrderId = null;
 let dragOrderId = null;
 
+//⑯ ドラッグ移動
+//つかむ
 function dragDish(orderId,index){
 
   dragIndex = index;
   dragOrderId = orderId;
 
 }
-
+//並び替え
 function dropDish(orderId,targetIndex){
 
   if(orderId !== dragOrderId) return;
@@ -413,6 +424,8 @@ function dropExtraDish(orderId,targetIndex){
 
 }
 
+//⑰ 提供済み切替
+//料理タップ時。
 function toggleDish(orderId, index) {
   const ref = window.db.collection("orders").doc(orderId);
 
@@ -423,6 +436,7 @@ function toggleDish(orderId, index) {
 
     const allDone = data.dishes.every(d => d.done);
 
+//全部完了したら「conpleteOrder」に移動
     if (allDone) {
       window.db.collection("completedOrders").add({
         ...data,
@@ -460,12 +474,14 @@ function toggleExtraDish(orderId,index){
 
 }
 
+//⑱ 削除
 function deleteOrder(id) {
   if (confirm("削除しますか？")) {
     window.db.collection("orders").doc(id).delete();
   }
 }
 
+//⑲ 戻す
 function restoreOrder(id) {
   window.db.collection("completedOrders").doc(id).get()
     .then(doc => {
@@ -480,6 +496,7 @@ function restoreOrder(id) {
     });
 }
 
+//⑳ 追加料理
 function addExtraDish(orderId){
 
   const choice = prompt(
@@ -537,6 +554,7 @@ function addExtraDish(orderId){
 
 }
 
+//㉑ コース変更
 function updateCourse(orderId, newCourse) {
 
   window.db.collection("orders")
@@ -622,6 +640,7 @@ window.toggleExtraDish = toggleExtraDish;
 window.dragExtraDish = dragExtraDish;
 window.dropExtraDish = dropExtraDish;
 
+//㉒ 1秒ごと更新
 setInterval(() => {
 
   window.db.collection("orders").get()
