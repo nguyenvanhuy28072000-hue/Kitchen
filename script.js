@@ -600,4 +600,4 @@ setInterval(() => {
       renderOrders(snapshot);
     });
 
-}, 60000);
+}, 1000);
