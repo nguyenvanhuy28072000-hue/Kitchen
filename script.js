@@ -220,9 +220,11 @@ else if(remainMinutes <= 30){
             onchange="updateField('${id}','table',this.value)">
         </td>
 
-        <td class="${loClass}">
-            ${loText}
-        </td>
+        <td
+  id="lo-${id}"
+  class="${loClass}">
+  ${loText}
+</td>
     `;
 
 //⑪ 料理表示
@@ -282,9 +284,10 @@ if(order.extraDishes){
   
     <div class="progressWrap">
       <div
+        id="progress-${id}"
         class="progressBar ${progressClass}"
         style="width:${progress}%">
-      </div>
+</div>
     </div>
 
   </td>
@@ -643,9 +646,49 @@ window.dropExtraDish = dropExtraDish;
 //㉒ 1秒ごと更新
 setInterval(() => {
 
-  window.db.collection("orders").get()
+  window.db.collection("orders")
+    .get()
     .then(snapshot => {
-      renderOrders(snapshot);
+
+      snapshot.forEach(doc => {
+
+        const order = doc.data();
+        const id = doc.id;
+
+        const [h,m] =
+          order.time.split(":");
+
+        const now = new Date();
+
+        const startMinutes =
+          Number(h) * 60 + Number(m);
+
+        const nowMinutes =
+          now.getHours() * 60 +
+          now.getMinutes();
+
+        const duration =
+          courseDuration[order.course];
+
+        let progress =
+          ((nowMinutes - startMinutes)
+          / duration) * 100;
+
+        if(progress < 0) progress = 0;
+        if(progress > 100) progress = 100;
+
+        const bar =
+          document.getElementById(
+            `progress-${id}`
+          );
+
+        if(bar){
+          bar.style.width =
+            progress + "%";
+        }
+
+      });
+
     });
 
-}, 30000);
+},1000);
