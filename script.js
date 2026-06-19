@@ -86,14 +86,15 @@ function renderOrders(snapshot) {
   body.innerHTML = "";
 
   snapshot.docs
-
-//進行中→開始前の順
-.sort((a,b)=>{
+  
+  //並び替え
+  .sort((a,b)=>{
   const timeCompare =
-    a.data().time.localeCompare(b.data().time);
+    a.data().time.localeCompare(b.data().time);  //時間順
 
   if(timeCompare !== 0) return timeCompare;
 
+  //同じ時間なら
   return (a.data().createdAt || 0) -
          (b.data().createdAt || 0);
 })
