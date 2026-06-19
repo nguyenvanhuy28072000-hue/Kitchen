@@ -146,6 +146,27 @@ let progress =
 if(progress < 0) progress = 0;
 if(progress > 100) progress = 100;
 
+let rowClass = "";
+
+if(order.course === "当日"){
+  rowClass = "courseTodayRow";
+}
+else if(order.course === "4000円"){
+  rowClass = "course4000Row";
+}
+else if(order.course === "4500円"){
+  rowClass = "course4500Row";
+}
+else if(order.course === "5000円"){
+  rowClass = "course5000Row";
+}
+else if(order.course === "6000円"){
+  rowClass = "course6000Row";
+}
+else if(order.course === "7000円"){
+  rowClass = "course7000Row";
+}
+
 let loClass = "";
 let progressClass = "";
 
@@ -173,7 +194,7 @@ else if(remainMinutes <= 30){
 }
 
     let html = `
-      <tr>
+      <tr class="${rowClass}">
 
         <td>
           <button onclick="addExtraDish('${id}')">
@@ -276,7 +297,7 @@ if(order.extraDishes){
 </tr>
 
 
-<tr>
+<tr class="${rowClass}">
 
   <td colspan="7"></td>
 
