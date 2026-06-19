@@ -86,17 +86,58 @@ function renderOrders(snapshot) {
   body.innerHTML = "";
 
   snapshot.docs
-  
-  //並び替え
-  .sort((a,b)=>{
-  const timeCompare =
-    a.data().time.localeCompare(b.data().time);  //時間順
 
-  if(timeCompare !== 0) return timeCompare;
+//進行中→開始前の順
+.sort((a,b)=>{
 
-  //同じ時間なら
-  return (a.data().createdAt || 0) -
-         (b.data().createdAt || 0);
+  const now = new Date();
+
+  const nowMinutes =
+    now.getHours() * 60 +
+    now.getMinutes();
+
+  const aData = a.data();
+  const bData = b.data();
+
+  const [ah,am] =
+    aData.time.split(":");
+
+  const [bh,bm] =
+    bData.time.split(":");
+
+  const aStart =
+    Number(ah) * 60 +
+    Number(am);
+
+  const bStart =
+    Number(bh) * 60 +
+    Number(bm);
+
+  const aStarted =
+    aStart <= nowMinutes;
+
+  const bStarted =
+    bStart <= nowMinutes;
+
+  //進行中を上
+  if(aStarted && !bStarted){
+    return -1;
+  }
+
+  //開始前を下
+  if(!aStarted && bStarted){
+    return 1;
+  }
+
+  //同じグループなら時間順
+  if(aStart !== bStart){
+    return aStart - bStart;
+  }
+
+  //同時刻なら登録順
+  return (aData.createdAt || 0) -
+         (bData.createdAt || 0);
+
 })
 
 //⑥ラストオーダー計算
