@@ -83,31 +83,7 @@ window.db.collection("orders")
 //画面表示担当。
 function renderOrders(snapshot) {
   const body = document.getElementById("courseBody");
-  body.innerHTML =
-
-`<tr>
-   <td colspan="20"
-       style="background:#ffcccc;
-              font-size:24px;
-              font-weight:bold;
-              text-align:center;">
-     進行中コース
-   </td>
- </tr>`
-
-+ startedHtml +
-
-`<tr>
-   <td colspan="20"
-       style="background:#ccccff;
-              font-size:24px;
-              font-weight:bold;
-              text-align:center;">
-     開始前コース
-   </td>
- </tr>`
-
-+ waitingHtml;
+  body.innerHTML =　"";
 
 let startedHtml = "";
 let waitingHtml = "";
@@ -350,7 +326,30 @@ if(order.extraDishes){
   }
   });
   body.innerHTML =
-    startedHtml + waitingHtml;
+
+`<tr>
+   <td colspan="20"
+       style="background:#ffcccc;
+              font-size:24px;
+              font-weight:bold;
+              text-align:center;">
+     進行中コース
+   </td>
+ </tr>`
+
++ startedHtml +
+
+`<tr>
+   <td colspan="20"
+       style="background:#ccccff;
+              font-size:24px;
+              font-weight:bold;
+              text-align:center;">
+     開始前コース
+   </td>
+ </tr>`
+
++ waitingHtml;
 }
 
 //⑭ 更新処理
