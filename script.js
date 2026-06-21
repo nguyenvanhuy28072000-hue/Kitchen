@@ -695,7 +695,6 @@ setInterval(() => {
     .get()
     .then(snapshot => {
 
-    renderOrders(snapshot);
       snapshot.forEach(doc => {
 
         const order = doc.data();
