@@ -328,11 +328,7 @@ if(order.extraDishes){
   body.innerHTML =
 
 `<tr>
-   <td colspan="20"
-       style="background:#ffcccc;
-              font-size:24px;
-              font-weight:bold;
-              text-align:center;">
+   <td colspan="20" class="sectionTitle">
      進行中コース
    </td>
  </tr>`
@@ -340,11 +336,7 @@ if(order.extraDishes){
 + startedHtml +
 
 `<tr>
-   <td colspan="20"
-       style="background:#ccccff;
-              font-size:24px;
-              font-weight:bold;
-              text-align:center;">
+   <td colspan="20" class="sectionTitle">
      開始前コース
    </td>
  </tr>`
