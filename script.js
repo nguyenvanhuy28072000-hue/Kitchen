@@ -85,6 +85,9 @@ function renderOrders(snapshot) {
   const body = document.getElementById("courseBody");
   body.innerHTML = "";
 
+let startedHtml = "";
+let waitingHtml = "";
+  
   snapshot.docs
   
   //並び替え
@@ -298,26 +301,32 @@ if(order.extraDishes){
 
 
 <tr class="${rowClass}">
-
   <td colspan="7"></td>
 
   <td colspan="${totalCols}">
-  
     <div class="progressWrap">
       <div
         id="progress-${id}"
         class="progressBar ${progressClass}"
         style="width:${progress}%">
-</div>
+      </div>
     </div>
-
   </td>
 
 </tr>
 `;
 
-    body.innerHTML += html;
+    const started =
+  nowMinutes >= startMinutes;
+
+  if(started){
+    startedHtml += html;
+  }else{
+    waitingHtml += html;
+  }
   });
+  body.innerHTML =
+    startedHtml + waitingHtml;
 }
 
 //⑭ 更新処理
