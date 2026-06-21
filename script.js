@@ -737,3 +737,11 @@ setInterval(() => {
     });
 
 },1000);
+
+setInterval(() => {
+
+  if(latestSnapshot){
+    renderOrders(latestSnapshot);
+  }
+
+}, 60000); // 1分ごと
