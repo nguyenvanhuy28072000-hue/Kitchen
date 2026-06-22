@@ -1,3 +1,4 @@
+let latestSnapshot = null;
 //① コース内容の定義
 //各コースにどんな料理が入っているかを登録。
 const courseData = {
@@ -76,6 +77,7 @@ function addCourse() {
 //④ リアルタイム監視
 window.db.collection("orders")
   .onSnapshot((snapshot) => {
+    latestSnapshot = snapshot; // 最新データを保存
     renderOrders(snapshot); //注文が増えたり削除されたら自動更新
   });
 
