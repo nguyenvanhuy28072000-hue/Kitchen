@@ -398,11 +398,6 @@ if(
     `;
   });
 }
-let dragIndex = null;
-let dragExtraIndex = null;
-let dragExtraOrderId = null;
-let dragOrderId = null;
-
 
 //⑰ 提供済み切替
 //料理タップ時。
