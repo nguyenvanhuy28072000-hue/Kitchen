@@ -67,10 +67,10 @@ function addCourse() {
     extraDishes: [],  //追加料理用。
   
     createdAt: Date.now() //登録時刻保存。
-});
+    });
 
-  document.getElementById("people").value = "";
-  document.getElementById("tableNo").value = "";
+    document.getElementById("people").value = "";
+    document.getElementById("tableNo").value = "";
 }
 
 //④ リアルタイム監視
