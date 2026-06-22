@@ -620,59 +620,6 @@ function updateCourse(orderId, newCourse) {
 
 }
 
-function moveDishLeft(orderId,index){
-
-  if(index === 0) return;
-
-  const ref =
-    window.db.collection("orders").doc(orderId);
-
-  ref.get().then(doc=>{
-
-    const data = doc.data();
-
-    const dishes = data.dishes;
-
-    const temp = dishes[index];
-
-    dishes[index] = dishes[index-1];
-
-    dishes[index-1] = temp;
-
-    ref.update({
-      dishes:dishes
-    });
-
-  });
-
-}
-
-function moveDishRight(orderId,index){
-
-  const ref =
-    window.db.collection("orders").doc(orderId);
-
-  ref.get().then(doc=>{
-
-    const data = doc.data();
-
-    const dishes = data.dishes;
-
-    if(index === dishes.length-1) return;
-
-    const temp = dishes[index];
-
-    dishes[index] = dishes[index+1];
-
-    dishes[index+1] = temp;
-
-    ref.update({
-      dishes:dishes
-    });
-
-  });
-
-}
 
 window.addCourse = addCourse;
 window.deleteOrder = deleteOrder;
@@ -680,8 +627,6 @@ window.updateField = updateField;
 window.updateCourse = updateCourse;
 window.toggleDish = toggleDish;
 window.restoreOrder = restoreOrder;
-window.moveDishLeft = moveDishLeft;
-window.moveDishRight = moveDishRight;
 window.dragDish = dragDish;
 window.dropDish = dropDish;
 window.toggleExtraDish = toggleExtraDish;
