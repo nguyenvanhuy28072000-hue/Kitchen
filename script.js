@@ -559,11 +559,7 @@ window.updateField = updateField;
 window.updateCourse = updateCourse;
 window.toggleDish = toggleDish;
 window.restoreOrder = restoreOrder;
-window.dragDish = dragDish;
-window.dropDish = dropDish;
 window.toggleExtraDish = toggleExtraDish;
-window.dragExtraDish = dragExtraDish;
-window.dropExtraDish = dropExtraDish;
 
 //㉒ 1秒ごと更新
 setInterval(() => {
