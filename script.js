@@ -1,4 +1,4 @@
-let latestSnapshot = null;
+let latestSnapshot = null; 
 //① コース内容の定義
 //各コースにどんな料理が入っているかを登録。
 const courseData = {
