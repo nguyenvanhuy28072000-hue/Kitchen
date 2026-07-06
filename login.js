@@ -1,5 +1,4 @@
 function login(){
-　　
 firebase.auth().signInWithEmailAndPassword(
 document.getElementById("email").value,
 document.getElementById("password").value
