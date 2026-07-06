@@ -1,24 +1,35 @@
-function login(){
-firebase.auth().signInWithEmailAndPassword(
-document.getElementById("email").value,
-document.getElementById("password").value
-)
-.then(()=>{
-window.location.href="index.html";
-})
-.catch(error=>{
+function login() {
 
-if(
-error.code === "auth/user-not-found" ||
-error.code === "auth/wrong-password" ||
-error.code === "auth/invalid-credential"
-){
-alert("メールアドレスまたはパスワードが間違っています。");
-}
-else{
-alert(error.message);
-}
+  firebase.auth().signInWithEmailAndPassword(
+    document.getElementById("email").value,
+    document.getElementById("password").value
+  )
+  .then(() => {
+    window.location.href = "index.html";
+  })
+  .catch(error => {
 
-});
+    switch (error.code) {
+
+      case "auth/invalid-login-credentials":
+      case "auth/wrong-password":
+      case "auth/user-not-found":
+      case "auth/invalid-credential":
+        alert("メールアドレスまたはパスワードが間違っています。");
+        break;
+
+      case "auth/invalid-email":
+        alert("メールアドレスの形式が正しくありません。");
+        break;
+
+      case "auth/too-many-requests":
+        alert("何度も失敗したため、一時的にログインできません。しばらく待ってからお試しください。");
+        break;
+
+      default:
+        alert("ログインに失敗しました。\n" + error.message);
+    }
+
+  });
 
 }
