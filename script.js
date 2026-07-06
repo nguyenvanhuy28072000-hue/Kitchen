@@ -571,15 +571,24 @@ firebase.auth().signInWithEmailAndPassword(
 });
 
 firebase.auth().onAuthStateChanged(user => {
-  if (user) {
-    document.getElementById("loginArea").style.display = "none";
-    document.querySelector(".controls").style.display = "block";
-    document.querySelector("table").style.display = "table";
-  } else {
-    document.getElementById("loginArea").style.display = "block";
-    document.querySelector(".controls").style.display = "none";
-    document.querySelector("table").style.display = "none";
+
+  if (!user) {
+    window.location.href = "login.html";
+    return;
   }
+
+  // ログイン済みなら注文の監視開始
+  window.db.collection("orders")
+    .onSnapshot(snapshot => {
+      latestSnapshot = snapshot;
+      renderOrders(snapshot);
+    });
+
+  window.db.collection("completedOrders")
+    .onSnapshot(snapshot => {
+      renderCompleted(snapshot);
+    });
+
 });
 //㉒ 1秒ごと更新
 setInterval(() => {
