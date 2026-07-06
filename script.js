@@ -348,10 +348,6 @@ if(order.extraDishes){
   });
 }
 
-window.db.collection("completedOrders")
-  .onSnapshot((snapshot) => {
-    renderCompleted(snapshot);
-  });
 
 //⑮ 完了済み表示
 function renderCompleted(snapshot) {
