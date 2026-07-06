@@ -559,13 +559,6 @@ window.restoreOrder = restoreOrder;
 window.toggleExtraDish = toggleExtraDish;
 
 
-.then(() => {
-        window.location.replace(window.location.pathname);   //← ログイン後に画面を更新
-  alert("ログイン成功");
-})
-.catch(error => {
-  alert(error.message);
-});
 
 firebase.auth().onAuthStateChanged(user => {
 
