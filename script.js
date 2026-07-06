@@ -558,10 +558,7 @@ window.toggleDish = toggleDish;
 window.restoreOrder = restoreOrder;
 window.toggleExtraDish = toggleExtraDish;
 
-firebase.auth().signInWithEmailAndPassword(
-  document.getElementById("email").value,
-  document.getElementById("password").value
-)
+
 .then(() => {
         window.location.replace(window.location.pathname);   //← ログイン後に画面を更新
   alert("ログイン成功");
