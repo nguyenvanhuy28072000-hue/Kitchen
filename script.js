@@ -558,6 +558,28 @@ window.toggleDish = toggleDish;
 window.restoreOrder = restoreOrder;
 window.toggleExtraDish = toggleExtraDish;
 
+firebase.auth().signInWithEmailAndPassword(
+  document.getElementById("email").value,
+  document.getElementById("password").value
+)
+.then(() => {
+  alert("ログイン成功");
+})
+.catch(error => {
+  alert(error.message);
+});
+
+firebase.auth().onAuthStateChanged(user => {
+  if (user) {
+    document.getElementById("loginArea").style.display = "none";
+    document.querySelector(".controls").style.display = "block";
+    document.querySelector("table").style.display = "table";
+  } else {
+    document.getElementById("loginArea").style.display = "block";
+    document.querySelector(".controls").style.display = "none";
+    document.querySelector("table").style.display = "none";
+  }
+});
 //㉒ 1秒ごと更新
 setInterval(() => {
 
