@@ -571,13 +571,15 @@ firebase.auth().signInWithEmailAndPassword(
 });
 
 firebase.auth().onAuthStateChanged(user => {
-
-  if (!user) {
-    window.location.href = "login.html";
-    return;
+  if (user) {
+    document.getElementById("loginArea").style.display = "none";
+    document.querySelector(".controls").style.display = "block";
+    document.querySelector("table").style.display = "table";
+  } else {
+    document.getElementById("loginArea").style.display = "block";
+    document.querySelector(".controls").style.display = "none";
+    document.querySelector("table").style.display = "none";
   }
-
-  // ここでonSnapshotを開始
 });
 //㉒ 1秒ごと更新
 setInterval(() => {
