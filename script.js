@@ -74,13 +74,6 @@ function addCourse() {
     document.getElementById("tableNo").value = "";
 }
 
-//④ リアルタイム監視
-window.db.collection("orders")
-  .onSnapshot((snapshot) => {
-    latestSnapshot = snapshot; // 最新データを保存
-    renderOrders(snapshot); //注文が増えたり削除されたら自動更新
-  });
-
 //⑤ 注文表示
 //画面表示担当。
 function renderOrders(snapshot) {
