@@ -18,3 +18,13 @@ const db = firebase.firestore();
 
 // グローバル公開（iOS12対策）
 window.db = db;
+
+firebase.auth().signInAnonymously()
+  .catch(error => {
+    console.error(error);
+  });
+firebase.auth().onAuthStateChanged(user => {
+  if(user){
+    console.log("ログイン成功");
+  }
+});
