@@ -538,7 +538,13 @@ function updateCourse(orderId, newCourse) {
 
 }
 
+function logout() {
+  firebase.auth().signOut().then(() => {
+    window.location.href = "login.html";
+  });
+}
 
+window.logout = logout;
 window.addCourse = addCourse;
 window.deleteOrder = deleteOrder;
 window.updateField = updateField;
