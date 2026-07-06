@@ -563,7 +563,7 @@ firebase.auth().signInWithEmailAndPassword(
   document.getElementById("password").value
 )
 .then(() => {
-  window.location.reload();   // ← ログイン後に画面を更新
+        window.location.replace(window.location.pathname);   //← ログイン後に画面を更新
   alert("ログイン成功");
 })
 .catch(error => {
