@@ -10,18 +10,22 @@ firebase.auth().onAuthStateChanged(user => {
 
 });
 
+//-----------------------
+// コース一覧取得
+//-----------------------
+
 function loadCourses(){
 
-    window.db.collection("courses").get().then(snapshot=>{
+    window.db.collection("courses")
+    .get()
+    .then(snapshot=>{
 
-        console.log("取得件数:", snapshot.size);
+        const select =
+        document.getElementById("courseSelect");
 
-        const select=document.getElementById("courseSelect");
-        select.innerHTML = "";
+        select.innerHTML="";
 
         snapshot.forEach(doc=>{
-
-            console.log(doc.id);
 
             select.innerHTML += `
             <option value="${doc.id}">
@@ -31,22 +35,28 @@ function loadCourses(){
 
         });
 
-        if(snapshot.size > 0){
+        if(snapshot.size>0){
             loadCourse();
         }
 
-    }).catch(error=>{
-        alert(error.message);
     });
 
 }
 
-document.getElementById("courseSelect")
+document
+.getElementById("courseSelect")
 .addEventListener("change",loadCourse);
+
+//-----------------------
+// コース読込
+//-----------------------
 
 function loadCourse(){
 
-    const id=document.getElementById("courseSelect").value;
+    const id =
+    document.getElementById("courseSelect").value;
+
+    if(id=="") return;
 
     window.db.collection("courses")
     .doc(id)
@@ -55,7 +65,8 @@ function loadCourse(){
 
         const data=doc.data();
 
-        document.getElementById("duration").value=data.duration;
+        document.getElementById("duration").value=
+        data.duration;
 
         document.getElementById("dishes").value=
         data.dishes.join("\n");
@@ -64,17 +75,24 @@ function loadCourse(){
 
 }
 
+//-----------------------
+// 保存
+//-----------------------
+
 function saveCourse(){
 
-    const id=document.getElementById("courseSelect").value;
+    const id=
+    document.getElementById("courseSelect").value;
 
     const duration=
-    Number(document.getElementById("duration").value);
+    Number(
+    document.getElementById("duration").value);
 
     const dishes=
     document.getElementById("dishes")
     .value
     .split("\n")
+    .map(x=>x.trim())
     .filter(x=>x!="");
 
     window.db.collection("courses")
@@ -82,10 +100,111 @@ function saveCourse(){
     .update({
 
         duration:duration,
+
         dishes:dishes
+
+    })
+    .then(()=>{
+
+        alert("保存しました");
 
     });
 
-    alert("保存しました");
+}
+
+//-----------------------
+// コース追加
+//-----------------------
+
+function addCourse(){
+
+    const name=
+    prompt("新しいコース名");
+
+    if(!name) return;
+
+    window.db.collection("courses")
+    .doc(name)
+    .set({
+
+        duration:90,
+
+        dishes:[]
+
+    })
+    .then(()=>{
+
+        alert("追加しました");
+
+        loadCourses();
+
+    });
+
+}
+
+//-----------------------
+// コース削除
+//-----------------------
+
+function deleteCourse(){
+
+    const id=
+    document.getElementById("courseSelect").value;
+
+    if(!confirm(id+"を削除しますか？")) return;
+
+    window.db.collection("courses")
+    .doc(id)
+    .delete()
+    .then(()=>{
+
+        alert("削除しました");
+
+        loadCourses();
+
+    });
+
+}
+
+//-----------------------
+// コース名変更
+//-----------------------
+
+function renameCourse(){
+
+    const oldName=
+    document.getElementById("courseSelect").value;
+
+    const newName=
+    prompt("新しいコース名");
+
+    if(!newName) return;
+
+    window.db.collection("courses")
+    .doc(oldName)
+    .get()
+    .then(doc=>{
+
+        return window.db
+        .collection("courses")
+        .doc(newName)
+        .set(doc.data());
+
+    })
+    .then(()=>{
+
+        return window.db
+        .collection("courses")
+        .doc(oldName)
+        .delete();
+
+    })
+    .then(()=>{
+
+        alert("変更しました");
+
+        loadCourses();
+
+    });
 
 }
