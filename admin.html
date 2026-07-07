@@ -75,6 +75,21 @@ hr{
     margin:25px 0;
 
 }
+#dishList div{
+    display:flex;
+    gap:10px;
+    margin-bottom:10px;
+}
+
+#dishList input{
+    flex:1;
+    margin:0;
+}
+
+#dishList button{
+    width:90px;
+    margin:0;
+}
 
 </style>
 
@@ -114,9 +129,13 @@ hr{
 type="number"
 id="duration">
 
-<label>料理一覧（1行に1品）</label>
+<label>料理一覧</label>
 
-<textarea id="dishes"></textarea>
+<div id="dishList"></div>
+
+<button onclick="addDish()">
+＋料理追加
+</button>
 
 <hr>
 
