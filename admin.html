@@ -1,50 +1,173 @@
 <!DOCTYPE html>
-<html lang="ja"> 
+<html lang="ja">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>コース管理</title>
 
 <style>
+
 body{
     font-family:sans-serif;
+    max-width:700px;
+    margin:auto;
     padding:20px;
+    background:#f5f5f5;
+}
+
+h2{
+    text-align:center;
+}
+
+.card{
+    background:white;
+    border-radius:10px;
+    padding:20px;
+    box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+
+label{
+    font-weight:bold;
+}
+
+select,
+input,
+textarea,
+button{
+
+    width:100%;
+    font-size:18px;
+    margin-top:8px;
+    margin-bottom:15px;
+    padding:10px;
+    box-sizing:border-box;
+
 }
 
 textarea{
-    width:100%;
-    height:300px;
-    font-size:18px;
+
+    height:260px;
+
 }
 
 button{
-    padding:10px 20px;
-    font-size:18px;
+
+    cursor:pointer;
+
 }
+
+.row{
+
+    display:flex;
+    gap:10px;
+
+}
+
+.row button{
+
+    flex:1;
+
+}
+
+hr{
+
+    margin:25px 0;
+
+}
+
 </style>
 
 </head>
 
 <body>
 
-<h2>コース編集</h2>
+<div class="card">
+
+<h2>コース管理</h2>
+
+<label>コース選択</label>
 
 <select id="courseSelect"></select>
 
-<br><br>
+<div class="row">
 
-<label>ラスト時間</label>
+<button onclick="loadCourse()">
 
-<input type="number" id="duration">
+読込
 
-<br><br>
+</button>
 
-<label>料理（1行に1品）</label>
+<button onclick="saveCourse()">
+
+保存
+
+</button>
+
+</div>
+
+<hr>
+
+<label>コース時間（分）</label>
+
+<input
+type="number"
+id="duration">
+
+<label>料理一覧（1行に1品）</label>
 
 <textarea id="dishes"></textarea>
 
+<hr>
+
+<h3>コース追加</h3>
+
+<input
+type="text"
+id="newCourse"
+placeholder="例：5500円">
+
+<button onclick="addCourse()">
+
+＋コース追加
+
+</button>
+
+<hr>
+
+<h3>コース名変更</h3>
+
+<input
+type="text"
+id="renameCourse"
+placeholder="新しいコース名">
+
+<button onclick="renameCourse()">
+
+コース名変更
+
+</button>
+
+<hr>
+
+<button
+style="background:#ff6666;color:white;"
+onclick="deleteCourse()">
+
+コース削除
+
+</button>
+
 <br><br>
 
-<button onclick="saveCourse()">保存</button>
+<button
+onclick="location.href='index.html'">
+
+← 管理画面へ戻る
+
+</button>
+
+</div>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
