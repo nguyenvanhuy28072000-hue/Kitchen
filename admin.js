@@ -1,22 +1,45 @@
-window.db.collection("courses").get().then(snapshot=>{
-    console.log("取得件数:", snapshot.size);
-    
-    const select=document.getElementById("courseSelect");
+firebase.auth().onAuthStateChanged(user => {
 
-    snapshot.forEach(doc=>{
-        console.log(doc.id);
-        
-        select.innerHTML+=`
-        <option value="${doc.id}">
-            ${doc.id}
-        </option>
-        `;
+    if (!user) {
+        alert("ログインしてください");
+        location.href = "login.html";
+        return;
+    }
 
-    });
-
-    loadCourse();
+    loadCourses();
 
 });
+
+function loadCourses(){
+
+    window.db.collection("courses").get().then(snapshot=>{
+
+        console.log("取得件数:", snapshot.size);
+
+        const select=document.getElementById("courseSelect");
+        select.innerHTML = "";
+
+        snapshot.forEach(doc=>{
+
+            console.log(doc.id);
+
+            select.innerHTML += `
+            <option value="${doc.id}">
+                ${doc.id}
+            </option>
+            `;
+
+        });
+
+        if(snapshot.size > 0){
+            loadCourse();
+        }
+
+    }).catch(error=>{
+        alert(error.message);
+    });
+
+}
 
 document.getElementById("courseSelect")
 .addEventListener("change",loadCourse);
@@ -59,7 +82,6 @@ function saveCourse(){
     .update({
 
         duration:duration,
-
         dishes:dishes
 
     });
