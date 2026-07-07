@@ -1,3 +1,4 @@
+let currentDishes = [];
 firebase.auth().onAuthStateChanged(user => {
 
     if (!user) {
@@ -14,30 +15,25 @@ firebase.auth().onAuthStateChanged(user => {
 // コース一覧取得
 //-----------------------
 
-function loadCourses(){
+function loadCourse(){
+
+    const id =
+    document.getElementById("courseSelect").value;
+
+    if(id=="") return;
 
     window.db.collection("courses")
+    .doc(id)
     .get()
-    .then(snapshot=>{
+    .then(doc=>{
 
-        const select =
-        document.getElementById("courseSelect");
+        const data = doc.data();
 
-        select.innerHTML="";
+        document.getElementById("duration").value = data.duration;
 
-        snapshot.forEach(doc=>{
+        currentDishes = [...data.dishes];
 
-            select.innerHTML += `
-            <option value="${doc.id}">
-                ${doc.id}
-            </option>
-            `;
-
-        });
-
-        if(snapshot.size>0){
-            loadCourse();
-        }
+        renderDishList();
 
     });
 
@@ -81,27 +77,19 @@ function loadCourse(){
 
 function saveCourse(){
 
-    const id=
+    const id =
     document.getElementById("courseSelect").value;
 
-    const duration=
-    Number(
-    document.getElementById("duration").value);
-
-    const dishes=
-    document.getElementById("dishes")
-    .value
-    .split("\n")
-    .map(x=>x.trim())
-    .filter(x=>x!="");
+    const duration =
+    Number(document.getElementById("duration").value);
 
     window.db.collection("courses")
     .doc(id)
     .update({
 
-        duration:duration,
+        duration: duration,
 
-        dishes:dishes
+        dishes: currentDishes
 
     })
     .then(()=>{
@@ -208,3 +196,61 @@ function renameCourse(){
     });
 
 }
+
+function renderDishList(){
+
+    const list =
+    document.getElementById("dishList");
+
+    list.innerHTML = "";
+
+    currentDishes.forEach((dish,index)=>{
+
+        list.innerHTML += `
+
+        <div>
+
+            <input
+                value="${dish}"
+                onchange="changeDish(${index},this.value)">
+
+            <button
+                onclick="deleteDish(${index})">
+
+                削除
+
+            </button>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+function changeDish(index,value){
+
+    currentDishes[index] = value;
+
+}
+
+function addDish(){
+
+    currentDishes.push("新しい料理");
+
+    renderDishList();
+
+}
+
+function deleteDish(index){
+
+    currentDishes.splice(index,1);
+
+    renderDishList();
+
+}
+
+window.addDish = addDish;
+window.deleteDish = deleteDish;
+window.changeDish = changeDish;
