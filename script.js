@@ -1,37 +1,25 @@
-let latestSnapshot = null; 
-//① コース内容の定義
-//各コースにどんな料理が入っているかを登録。
-const courseData = {
-"当日":[
-  "お造り","サラダ","焼き鳥２種","串揚げ３種","デザート"
-],
-"4000円":[
-  "お造り","サラダ","揚げ物２種","鳥バジルソース","カレーつくね","ちまき"
-],
-"4500円":[
-  "お造り","サラダ","キス、なす天","つくねと万願寺","さわら","ちまき","デザート"
-],
-"5000円":[
-  "お造り","湯葉","サラダ","エビ、なす天","はもユーリンチ","鶏のてりやき","ちまき","デザート"
-],
-"6000円":[
-  "お造り","湯葉","サラダ","はも、生麩の揚げ出し","豚しゃぶ","さわら","ちまき","デザート"
-],
-"7000円":[
-  "お造り","湯葉","サラダ","エビ、なす、万願寺の天","はもユーリンチ","鶏のてりやき","さわら","ちまき","デザート"
-]
-};
-　
-//② コース時間の定義
-//コース開始からL.O.までの時間。
-const courseDuration = {
-  "当日":70,
-  "4000円":90,
-  "4500円":90,
-  "5000円":100,
-  "6000円":110,
-  "7000円":120
-}; 
+let latestSnapshot = null;
+
+let courseData = {};
+let courseDuration = {};
+
+function loadCourses(){
+
+    return window.db.collection("courses").get()
+    .then(snapshot=>{
+
+        snapshot.forEach(doc=>{
+
+            const data = doc.data();
+
+            courseData[doc.id] = data.dishes;
+            courseDuration[doc.id] = data.duration;
+
+        });
+
+    });
+
+}
 
 //③ コース追加
 //「追加」ボタンを押した時の処理。
@@ -524,17 +512,19 @@ function addExtraDish(orderId){
 function updateCourse(orderId, newCourse) {
 
   window.db.collection("orders")
-    .doc(orderId)
-    .update({
+.doc(orderId)
+.update({
 
-      course: newCourse,
+    course:newCourse,
 
-      dishes: courseData[newCourse].map(d => ({
-        name: d,
-        done: false
-      }))
+    dishes:courseData[newCourse].map(d=>({
+        name:d,
+        done:false
+    })),
 
-    });
+    extraDishes:[]
+
+});
 
 }
 
@@ -557,21 +547,28 @@ window.toggleExtraDish = toggleExtraDish;
 
 firebase.auth().onAuthStateChanged(user => {
 
-  if (!user) {
-    window.location.href = "login.html";
-    return;
-  }
+    if (!user){
+        window.location.href = "login.html";
+        return;
+    }
 
-  // ログイン済みなら注文の監視開始
-  window.db.collection("orders")
-    .onSnapshot(snapshot => {
-      latestSnapshot = snapshot;
-      renderOrders(snapshot);
-    });
+    loadCourses().then(()=>{
 
-  window.db.collection("completedOrders")
-    .onSnapshot(snapshot => {
-      renderCompleted(snapshot);
+        window.db.collection("orders")
+        .onSnapshot(snapshot=>{
+
+            latestSnapshot = snapshot;
+            renderOrders(snapshot);
+
+        });
+
+        window.db.collection("completedOrders")
+        .onSnapshot(snapshot=>{
+
+            renderCompleted(snapshot);
+
+        });
+
     });
 
 });
