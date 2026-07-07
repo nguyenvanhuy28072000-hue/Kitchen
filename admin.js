@@ -1,9 +1,11 @@
 window.db.collection("courses").get().then(snapshot=>{
-
+    console.log("取得件数:", snapshot.size);
+    
     const select=document.getElementById("courseSelect");
 
     snapshot.forEach(doc=>{
-
+        console.log(doc.id);
+        
         select.innerHTML+=`
         <option value="${doc.id}">
             ${doc.id}
