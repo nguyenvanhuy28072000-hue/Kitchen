@@ -71,13 +71,16 @@ function loadCourse(){
     .get()
     .then(doc=>{
 
-        const data=doc.data();
+        const data = doc.data();
 
-        document.getElementById("duration").value=
+        document.getElementById("duration").value =
         data.duration;
 
-        document.getElementById("dishes").value=
-        data.dishes.join("\n");
+        // Firestoreの料理を配列へコピー
+        currentDishes = [...(data.dishes || [])];
+
+        // 一覧表示
+        renderDishList();
 
     });
 
@@ -219,14 +222,15 @@ function renderDishList(){
     currentDishes.forEach((dish,index)=>{
 
         list.innerHTML += `
-
         <div>
 
             <input
+                type="text"
                 value="${dish}"
                 onchange="changeDish(${index},this.value)">
 
             <button
+                type="button"
                 onclick="deleteDish(${index})">
 
                 削除
@@ -234,7 +238,6 @@ function renderDishList(){
             </button>
 
         </div>
-
         `;
 
     });
