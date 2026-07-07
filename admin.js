@@ -15,26 +15,38 @@ firebase.auth().onAuthStateChanged(user => {
 // コース一覧取得
 //-----------------------
 
-function loadCourse(){
-
-    const id =
-    document.getElementById("courseSelect").value;
-
-    if(id=="") return;
+function loadCourses(){
 
     window.db.collection("courses")
-    .doc(id)
     .get()
-    .then(doc=>{
+    .then(snapshot=>{
 
-        const data = doc.data();
+        alert("コース数：" + snapshot.size);
 
-        document.getElementById("duration").value = data.duration;
+        const select =
+        document.getElementById("courseSelect");
 
-        currentDishes = [...data.dishes];
+        select.innerHTML="";
 
-        renderDishList();
+        snapshot.forEach(doc=>{
 
+            alert(doc.id);
+
+            select.innerHTML += `
+            <option value="${doc.id}">
+                ${doc.id}
+            </option>
+            `;
+
+        });
+
+        if(snapshot.size>0){
+            loadCourse();
+        }
+
+    })
+    .catch(error=>{
+        alert(error.message);
     });
 
 }
