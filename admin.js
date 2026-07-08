@@ -118,11 +118,9 @@ function addCourse(){
     window.db.collection("courses")
     .doc(name)
     .set({
-
         duration:90,
-
         dishes:[]
-
+        order:Date.now()
     })
     .then(()=>{
 
@@ -212,7 +210,11 @@ function renderDishList(){
 
         list.innerHTML += `
         <div>
-
+            draggable="true"
+            ondragstart="dragStart(${index})"
+            ondragover="event.preventDefault()"
+            ondrop="dropDish(${index})">
+            
             <input
                 type="text"
                 value="${dish}"
@@ -254,6 +256,32 @@ function deleteDish(index){
     renderDishList();
 
 }
+
+let dragIndex = null;
+
+function dragStart(index){
+
+    dragIndex = index;
+
+}
+
+function dropDish(dropIndex){
+
+    if(dragIndex===null) return;
+
+    const item =
+    currentDishes.splice(dragIndex,1)[0];
+
+    currentDishes.splice(dropIndex,0,item);
+
+    dragIndex = null;
+
+    renderDishList();
+
+}
+
+window.dragStart = dragStart;
+window.dropDish = dropDish;
 
 window.addDish = addDish;
 window.deleteDish = deleteDish;
