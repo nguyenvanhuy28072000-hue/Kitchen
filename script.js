@@ -552,6 +552,78 @@ function logout() {
     window.location.href = "login.html";
   });
 }
+let dragOrderId = null;
+let dragIndex = null;
+
+function dragDish(orderId, index) {
+    dragOrderId = orderId;
+    dragIndex = index;
+}
+
+function dropDish(orderId, dropIndex) {
+
+    if (dragOrderId !== orderId) return;
+    if (dragIndex === null) return;
+
+    const ref = window.db.collection("orders").doc(orderId);
+
+    ref.get().then(doc => {
+
+        const data = doc.data();
+
+        const dishes = data.dishes;
+
+        const item = dishes.splice(dragIndex,1)[0];
+
+        dishes.splice(dropIndex,0,item);
+
+        ref.update({
+            dishes:dishes
+        });
+
+        dragIndex = null;
+        dragOrderId = null;
+
+    });
+
+}
+
+let dragExtraIndex = null;
+let dragExtraOrderId = null;
+
+function dragExtraDish(orderId,index){
+
+    dragExtraOrderId = orderId;
+    dragExtraIndex = index;
+
+}
+
+function dropExtraDish(orderId,dropIndex){
+
+    if(dragExtraOrderId !== orderId) return;
+
+    const ref = window.db.collection("orders").doc(orderId);
+
+    ref.get().then(doc=>{
+
+        const data = doc.data();
+
+        const extra = data.extraDishes || [];
+
+        const item = extra.splice(dragExtraIndex,1)[0];
+
+        extra.splice(dropIndex,0,item);
+
+        ref.update({
+            extraDishes:extra
+        });
+
+        dragExtraIndex = null;
+        dragExtraOrderId = null;
+
+    });
+
+}
 
 window.logout = logout;
 window.addCourse = addCourse;
@@ -561,7 +633,10 @@ window.updateCourse = updateCourse;
 window.toggleDish = toggleDish;
 window.restoreOrder = restoreOrder;
 window.toggleExtraDish = toggleExtraDish;
-
+window.dragDish = dragDish;
+window.dropDish = dropDish;
+window.dragExtraDish = dragExtraDish;
+window.dropExtraDish = dropExtraDish;
 
 
 firebase.auth().onAuthStateChanged(user => {
