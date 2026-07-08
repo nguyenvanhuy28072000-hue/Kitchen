@@ -107,23 +107,13 @@ hr{
 
 <div class="row">
 
-<button onclick="loadCourse()">
-
-読込
-
-</button>
-
-<button onclick="saveCourse()">
-
-保存
-
-</button>
+<button onclick="loadCourse()">読込</button>
+<button onclick="addCourse()"> ＋コース追加</button>
+<button onclick="saveCourse()">保存</button>
 
 </div>
 
-<hr>
-
-<label>コース時間（分）</label>
+<hr><label>コース時間（分）</label>
 
 <input
 type="number"
@@ -133,34 +123,15 @@ id="duration">
 
 <div id="dishList"></div>
 
-<button onclick="addDish()">
-＋料理追加
-</button>
+<button onclick="addDish()">＋料理追加</button>
+
+<hr><button onclick="renameCourse()">コース名変更</button>
 
 <hr>
-
-<button onclick="addCourse()">
-
-＋コース追加
-
-</button>
-
-<hr>
-
-<button onclick="renameCourse()">
-
-コース名変更
-
-</button>
-
-<hr>
-
 <button
 style="background:#ff6666;color:white;"
 onclick="deleteCourse()">
-
 コース削除
-
 </button>
 
 <br><br>
