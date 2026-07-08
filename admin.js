@@ -119,7 +119,7 @@ function addCourse(){
     .doc(name)
     .set({
         duration:90,
-        dishes:[]
+        dishes:[],
         order:Date.now()
     })
     .then(()=>{
@@ -209,7 +209,7 @@ function renderDishList(){
     currentDishes.forEach((dish,index)=>{
 
         list.innerHTML += `
-        <div>
+        <div
             draggable="true"
             ondragstart="dragStart(${index})"
             ondragover="event.preventDefault()"
