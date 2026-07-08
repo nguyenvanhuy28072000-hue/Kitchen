@@ -105,7 +105,18 @@ let waitingHtml = "";
 .forEach(doc=>{
     const order = doc.data();
     const id = doc.id;
+let courseOptions = "";
 
+Object.keys(courseData).forEach(course=>{
+
+    courseOptions += `
+    <option value="${course}"
+    ${order.course===course?"selected":""}>
+        ${course}
+    </option>
+    `;
+
+});
     const [h, m] = order.time.split(":");  //開始時刻分解。h=hour,m=minues
 
     const lo = new Date(); //日時作成。
@@ -148,26 +159,25 @@ let progress =
 if(progress < 0) progress = 0;
 if(progress > 100) progress = 100;
 
-let rowClass = "";
+const colors = [
+    "#eeeeee",
+    "#d6ecff",
+    "#dff7df",
+    "#fff7c7",
+    "#ffe4c4",
+    "#ffd6d6",
+    "#e8d6ff",
+    "#d6fff7",
+    "#ffe8b3",
+    "#d9f0ff"
+];
 
-if(order.course === "当日"){
-  rowClass = "courseTodayRow";
-}
-else if(order.course === "4000円"){
-  rowClass = "course4000Row";
-}
-else if(order.course === "4500円"){
-  rowClass = "course4500Row";
-}
-else if(order.course === "5000円"){
-  rowClass = "course5000Row";
-}
-else if(order.course === "6000円"){
-  rowClass = "course6000Row";
-}
-else if(order.course === "7000円"){
-  rowClass = "course7000Row";
-}
+const courseNames = Object.keys(courseData);
+
+const colorIndex =
+courseNames.indexOf(order.course) % colors.length;
+
+const rowColor = colors[colorIndex];
 
 let loClass = "";
 let progressClass = "";
@@ -196,7 +206,7 @@ else if(remainMinutes <= 30){
 }
 
     let html = `
-      <tr class="${rowClass}">
+      <tr style="background:${rowColor}">
 
         <td>
           <button onclick="addExtraDish('${id}')">
@@ -218,15 +228,8 @@ else if(remainMinutes <= 30){
 
         <td>
           <select onchange="updateCourse('${id}',this.value)">
-          
-          <option value="当日" ${order.course==="当日"?"selected":""}>当日</option>
-          <option value="4000円" ${order.course==="4000円"?"selected":""}>4000円</option>
-          <option value="4500円" ${order.course==="4500円"?"selected":""}>4500円</option>
-          <option value="5000円" ${order.course==="5000円"?"selected":""}>5000円</option>
-          <option value="6000円" ${order.course==="6000円"?"selected":""}>6000円</option>
-          <option value="7000円" ${order.course==="7000円"?"selected":""}>7000円</option>
-          
-          </select>
+            ${courseOptions}
+            </select>
         </td>
 
         <td>
@@ -299,7 +302,7 @@ if(order.extraDishes){
 </tr>
 
 
-<tr class="${rowClass}">
+<tr style="background:${rowColor}">
   <td colspan="7"></td>
 
   <td colspan="${totalCols}">
