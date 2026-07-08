@@ -5,8 +5,18 @@ let courseDuration = {};
 
 function loadCourses(){
 
-    return window.db.collection("courses").get()
+    return window.db.collection("courses")
+    .get()
     .then(snapshot=>{
+
+        courseData = {};
+        courseDuration = {};
+
+        const select =
+        document.getElementById("courseSelect");
+
+        select.innerHTML =
+        '<option value="">コース選択</option>';
 
         snapshot.forEach(doc=>{
 
@@ -14,6 +24,12 @@ function loadCourses(){
 
             courseData[doc.id] = data.dishes;
             courseDuration[doc.id] = data.duration;
+
+            select.innerHTML += `
+                <option value="${doc.id}">
+                    ${doc.id}
+                </option>
+            `;
 
         });
 
@@ -546,31 +562,21 @@ window.toggleExtraDish = toggleExtraDish;
 
 
 firebase.auth().onAuthStateChanged(user => {
-
     if (!user){
         window.location.href = "login.html";
         return;
     }
-
     loadCourses().then(()=>{
-
         window.db.collection("orders")
         .onSnapshot(snapshot=>{
-
             latestSnapshot = snapshot;
             renderOrders(snapshot);
-
         });
-
         window.db.collection("completedOrders")
         .onSnapshot(snapshot=>{
-
-            renderCompleted(snapshot);
-
+        renderCompleted(snapshot);
         });
-
     });
-
 });
 //㉒ 1秒ごと更新
 setInterval(() => {
