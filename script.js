@@ -537,7 +537,7 @@ function updateCourse(orderId, newCourse) {
 
     course:newCourse,
 
-    dishes: (courseData[course] || []).map(d => ({
+    dishes: (courseData[newCourse] || []).map(d => ({
         name:d,
         done:false
     })),
