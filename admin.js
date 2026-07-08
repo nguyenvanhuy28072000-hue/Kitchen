@@ -20,26 +20,16 @@ function loadCourses(){
     window.db.collection("courses")
     .get()
     .then(snapshot=>{
-
-        alert("コース数：" + snapshot.size);
-
         const select =
         document.getElementById("courseSelect");
-
         select.innerHTML="";
-
         snapshot.forEach(doc=>{
-
-            alert(doc.id);
-
             select.innerHTML += `
             <option value="${doc.id}">
                 ${doc.id}
             </option>
             `;
-
         });
-
         if(snapshot.size>0){
             loadCourse();
         }
@@ -48,7 +38,6 @@ function loadCourses(){
     .catch(error=>{
         alert(error.message);
     });
-
 }
 
 document
