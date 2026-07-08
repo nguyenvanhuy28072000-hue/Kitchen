@@ -64,7 +64,7 @@ function addCourse() {
     table,
   
   //料理一覧生成。
-    dishes: courseData[course].map(d => ({
+    dishes: (courseData[course] || []).map(d => ({
       name: d,
       done: false, //未提供状態。
     })),
@@ -536,7 +536,7 @@ function updateCourse(orderId, newCourse) {
 
     course:newCourse,
 
-    dishes:courseData[newCourse].map(d=>({
+    dishes: (courseData[course] || []).map(d => ({
         name:d,
         done:false
     })),
