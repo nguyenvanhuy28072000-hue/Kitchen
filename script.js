@@ -6,7 +6,6 @@ let courseDuration = {};
 function loadCourses(){
 
     return window.db.collection("courses")
-    .orderBy("order")
     .get()
     .then(snapshot=>{
 
