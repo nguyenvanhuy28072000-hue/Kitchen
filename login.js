@@ -4,6 +4,27 @@ function login() {
     document.getElementById("email").value,
     document.getElementById("password").value
   )
+  .then((result) => {
+
+    const user = result.user;
+
+    return window.db
+
+      .collection("loginDevices")
+
+      .doc(user.uid)
+
+      .set({
+
+        email: user.email,
+
+        device: navigator.userAgent,
+
+        lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+
+      });
+
+  })
   .then(() => {
     window.location.href = "index.html";
   })
