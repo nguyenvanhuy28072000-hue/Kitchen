@@ -548,9 +548,31 @@ function updateCourse(orderId, newCourse) {
 }
 
 function logout() {
-  firebase.auth().signOut().then(() => {
-    window.location.href = "login.html";
-  });
+
+  const user = firebase.auth().currentUser;
+
+  if (user) {
+
+    window.db
+      .collection("loginDevices")
+      .doc(user.uid)
+      .delete()
+      .finally(() => {
+
+        firebase.auth().signOut().then(() => {
+          window.location.href = "login.html";
+        });
+
+      });
+
+  } else {
+
+    firebase.auth().signOut().then(() => {
+      window.location.href = "login.html";
+    });
+
+  }
+
 }
 let dragOrderId = null;
 let dragIndex = null;
