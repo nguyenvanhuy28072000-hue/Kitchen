@@ -222,9 +222,10 @@ function renderLONotifications(){
 
             html += `
                 <div class="loNoticeOrder">
+                    ${escapeLOText(order.time)}
                     ${escapeLOText(order.course)}コース　
                     ${escapeLOText(order.people)}名　
-                    テーブル${escapeLOText(order.table)}
+                    テーブル: ${escapeLOText(order.table)}
                 </div>
             `;
 
@@ -656,21 +657,55 @@ if(order.extraDishes){
   });
   body.innerHTML =
 
-`<tr>
-   <td colspan="20" class="sectionTitle">
-     進行中コース
-   </td>
- </tr>`
+    `
 
-+ startedHtml +
+    <tr>
 
-`<tr>
-   <td colspan="20" class="sectionTitle">
-     開始前コース
-   </td>
- </tr>`
+        <td colspan="20" class="sectionTitle">
 
-+ waitingHtml;
+            進行中コース
+
+        </td>
+
+    </tr>
+
+    <!-- L.O.通知エリア -->
+
+    <tr>
+
+        <td colspan="20" style="padding:10px;">
+
+            <div id="loNotificationArea"></div>
+
+        </td>
+
+    </tr>
+
+    `
+
+    +
+
+    startedHtml
+
+    +
+
+    `
+
+    <tr>
+
+        <td colspan="20" class="sectionTitle">
+
+            開始前コース
+
+        </td>
+
+    </tr>
+
+    `
+
+    +
+
+    waitingHtml;
 }
 
 //⑭ 更新処理
