@@ -1,5 +1,5 @@
 let latestSnapshot = null;
-
+ 
 let courseData = {};
 let courseDuration = {};
 
